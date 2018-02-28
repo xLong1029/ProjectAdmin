@@ -22,7 +22,7 @@
 	        <!-- <Form-item>
 	            <Button type="primary" long @click="">注册</Button>
 	        </Form-item> -->
-	        <div style="text-align:center">测试使用登录账号:18888888888 密码:666666</div>
+	        <div style="text-align:center">测试使用登录账号:18888888888密码:666666</div>
 	    </Form>
 	</div>
 </template>

@@ -54,36 +54,36 @@
             MenuList: [
                 {
                     name: 'Home',
-                    icon: 'navicon-round',
+                    icon: 'home',
                     text: '首页',
                     submenu: []
                 },
                 {
                     name: 'AccountManage',
-                    icon: 'navicon-round',
+                    icon: 'person',
                     text: '账户管理',
                     submenu: []
                 },
                 {
                     name: 'CaseManage',
-                    icon: 'navicon-round',
+                    icon: 'cube',
                     text: '案例管理',
                     submenu: []
                 },
                 {
                     name: 'Broadcast',
-                    icon: 'navicon-round',
+                    icon: 'android-volume-up',
                     text: '广播消息',
                     submenu: []
                 },
                 {
                     name: 'ContactManage',
-                    icon: 'navicon-round',
+                    icon: 'ios-telephone',
                     text: '联系设置',
                     submenu: [
                         {
                             name: 'CompanyInfo',
-                            text: '公司简介'
+                            text: '公司介绍'
                         },
                         {
                             name: 'ContactWay',
@@ -223,19 +223,28 @@
         margin: 0 auto;
     }
     .sidebar-hide-text{
+        .menu-title a{
+            padding: 10px 16px;
+            text-align: center;
+        }
         .menu-submenu-title{
-            padding: 14px 24px 30px 24px;
+            padding: 10px 16px 30px 16px;
             border-bottom: 1px solid #3a3d44;
         }
 
         .menu-title-icon{
-            margin-right: 0;
+            display: none;
+        }
+
+        .menu-submenu-title-icon{
+            margin-right: 16px;
         }
         
         .submenu-title a{
             display: block;
-            padding: 14px 24px;
+            padding: 10px 16px;
             text-align: center;
+            border-bottom: 1px solid #2f3135;
         }
     }
 

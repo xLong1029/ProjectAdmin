@@ -2,44 +2,44 @@
     <div class="g-content">
         <!-- 按条件查询 -->
         <div class="m-query-form">
-            <Form ref="queryForm" :model="queryForm" :rules="validate">
-                <Form-item class="query-item">
+            <Form ref="queryForm" :model="queryForm" :rules="queryValid">
+                <FormItem class="query-item">
                     <Input v-model="queryForm.id" placeholder="案例编号"></Input>
-                </Form-item>
-                <Form-item prop="caseName" class="query-item">
+                </FormItem>
+                <FormItem prop="caseName" class="query-item">
                     <Input v-model="queryForm.caseName" placeholder="项目名称"></Input>
-                </Form-item>
-                <Form-item prop="companyName" class="query-item">
+                </FormItem>
+                <FormItem prop="companyName" class="query-item">
                     <Input v-model="queryForm.companyName" placeholder="公司名称"></Input>
-                </Form-item>
-                <Form-item class="query-item">
-                    <Select v-model="queryForm.job" placeholder="立项专项">
+                </FormItem>
+                <FormItem class="query-item">
+                    <Select v-model="queryForm.caseType" placeholder="立项专项">
                         <Option value="" >全部</Option>
                         <Option v-for="(item, index) in caseTypeList" :value="item.name" :key="index">{{ item.name }}</Option>
                     </Select>
-                </Form-item>
-                <Form-item class="fl" prop="date">
+                </FormItem>
+                <FormItem class="fl" prop="date">
                     <Date-picker class="query-item" type="date" v-model="queryForm.sTime" placement="bottom-end" placeholder="请选择开始日期" @on-change="getStartDate"></Date-picker>
                     <Date-picker class="query-item" type="date" v-model="queryForm.eTime" placement="bottom-end" placeholder="请选择结束日期" @on-change="getEndDate"></Date-picker>
                     <div class="clearfix"></div>
-                </Form-item>
-                <Form-item class="query-item">
+                </FormItem>
+                <FormItem class="query-item">
                     <Select v-model="queryForm.enabledState" placeholder="展示状态">
                         <Option value="">全部</Option>
                         <Option value="1">启用</Option>
                         <Option value="-1">禁用</Option>
                     </Select>
-                </Form-item>
-                <Form-item class="fl">
+                </FormItem>
+                <FormItem class="fl">
                     <Button class="query-button" type="primary" @click="query('queryForm', 'valid')">查询</Button>
                     <Button class="query-button" type="ghost" @click="resetQuery('queryForm')">重置</Button>
-                </Form-item>
+                </FormItem>
             </Form>
             <div class="clearfix"></div>
         </div>
         <!-- 操作按钮 -->
         <div class="m-operation">
-            <Button class="operation-btn" type="primary" >新增</Button>
+            <Button class="operation-btn" type="primary" @click="addCase">新增</Button>
             <Button class="operation-btn" :disabled="selectList.length == 0" type="warning" @click="deleteData">删除</Button>
             <Button class="operation-btn" :disabled="selectList.length == 0" type="primary" @click="enableOrDisable(1)">启用</Button>
             <Button class="operation-btn" :disabled="selectList.length == 0" type="warning" @click="enableOrDisable(-1)">禁用</Button>
@@ -73,6 +73,32 @@
             </Page>
             <div class="clearfix"></div>
         </div>
+        <!-- 新增窗口-->
+        <Modal v-model="showModal" width="500" @on-cancel="closeModal('paramsForm')">
+            <p slot="header">
+                <span v-text="paramsForm.caseName == '' ? '新增案例' : '编辑案例'"></span>
+            </p>
+            <div>
+                <Form ref="paramsForm" :model="paramsForm" :rules="paramsValid" :label-width="100">
+                    <FormItem label="项目名称：" prop="caseName">
+                        <Input v-model="paramsForm.caseName" placeholder="请输入项目名称"></Input>
+                    </FormItem>
+                    <FormItem label="公司名称：" prop="companyName">
+                        <Input v-model="paramsForm.companyName" placeholder="请输入公司名称"></Input>
+                    </FormItem>
+                    <FormItem label="立项专项：" prop="caseType">
+                        <Select v-model="paramsForm.caseType" placeholder="请选择专项立项">
+                            <Option value="" >全部</Option>
+                            <Option v-for="(item, index) in caseTypeList" :value="item.name" :key="index">{{ item.name }}</Option>
+                        </Select>
+                    </FormItem>
+                </Form>
+            </div>
+            <div slot="footer">
+                <Button size="large" @click="closeModal('paramsForm')">取消</Button>
+                <Button type="primary" size="large" @click="operation('paramsForm', operateType)">确定</Button>
+            </div>
+        </Modal>
     </div>
 </template>
 
@@ -122,8 +148,25 @@
                     // 状态
                     enabledState: '',
                 },
-                // 验证规则
-                validate: {},
+                // 查询验证
+                queryValid: {},
+                // 参数表单
+                paramsForm: {
+                    id: '',
+                    caseName: '',                    
+                    companyName: '',
+                    caseType: ''
+                },
+                // 表单验证
+                paramsValid: {
+                    caseName:[{ required: true, message: '项目名称不能为空', trigger: 'blur' }],
+                    companyName:[{ required: true, message: '公司名称不能为空', trigger: 'blur' }],
+                    caseType: [{ required: true, message: '请选择立项专项', trigger: 'change' }],
+                },
+                // 是否显示弹窗
+                showModal: false,
+                // 操作类型:1是新增, 2是编辑
+                operateType: 0,
                 // 用户列表
                 userList:[
                     {
@@ -177,13 +220,38 @@
                         align: 'center',
                         render: (h, params) => {
                             return h('div', [
-                                // tableSetting.gotoDetail(h, params, this, '查看详情', 'StoreCase'),
+                                tableSetting.popUp(h, params, this, '编辑', 0),
                             ]);                          
                         }
                     }
                 ],
                 //表格信息
-                listData:[],
+                listData:[
+                    {
+                        id: 1,
+                        caseName: '我是牛逼轰轰的超级案例1',
+                        companyName: '华建公司',
+                        caseType: '科技专项',
+                        createTime: '2018-2-28',
+                        enabledState: 1
+                    },
+                    {
+                        id: 2,
+                        caseName: '我是牛逼轰轰的超级案例2',
+                        companyName: '华建公司',
+                        caseType: '文化专项',
+                        createTime: '2018-2-28',
+                        enabledState: 1
+                    },
+                    {
+                        id: 3,
+                        caseName: '我是牛逼轰轰的超级案例3',
+                        companyName: '华建公司',
+                        caseType: '服务专项',
+                        createTime: '2018-2-28',
+                        enabledState: 1
+                    }
+                ],
             }
         },
         created(){
@@ -213,22 +281,41 @@
             },
             // 设置列表数据
             setListData(result){
-                if(result.length > 0){
-                    this.listData = result.map(item => {
-                        return {
-                            id: item.id,
-                            realname: item.attributes.realname,
-                            gender: item.attributes.gender,
-                            caseName: item.attributes.caseName,
-                            email: item.attributes.email,
-                            job: item.attributes.job,
-                            province: item.attributes.province,
-                            createTime: item.createdAt,
-                            enabledState: item.attributes.enabledState,
-                        }
-                    });
-                }
-                else this.listData = [];
+            },
+            // 打开弹窗
+            openModel(params){
+                this.showModal = true;
+                this.paramsForm.caseName = params.caseName;
+                this.paramsForm.companyName = params.companyName;
+                this.paramsForm.caseType = params.caseType;
+                this.paramsForm.id = params.id;
+            },
+            // 关闭弹窗
+            closeModal(name){
+                this.showModal = false;
+                // 数据初始化（重置）
+                this.$refs[name].resetFields();
+            },
+            // 弹窗操作
+            operation(name, type){
+                // 表单验证
+                this.$refs[name].validate((valid)=>{
+                    if(valid){
+                        this.paramsForm.type = parseInt(this.paramsForm.type);
+                        // 操作
+                        if(type == 1) this.addData();
+                        else if(type == 2) this.EditData();
+                        // 延迟关闭
+                        setTimeout(() => {
+                            this.closeModal(name);
+                        }, 500);
+                    }
+                    else this.$Message.error('提交失败！填写有误');
+                })
+            },
+            addCase(){
+                this.showModal = true;
+                this.operateType = 1;
             },
         }
     }

@@ -12,7 +12,7 @@
                             <span>{{ infoForm.createdAt }}</span>
                         </Form-item>
                         <Form-item v-if="pageType == 'edit'" label="用户编号：">
-                            <span>{{ userId }}</span>
+                            <span>{{ infoForm.userId }}</span>
                         </Form-item>
                         <Form-item label="真实姓名：" prop="realname">
                             <Input v-model="infoForm.realname" placeholder="请输入真实姓名"></Input>
@@ -35,6 +35,22 @@
                         <Form-item label="邮箱：" prop="email">
                             <AutoComplete v-model="infoForm.email" :data="emailList" @on-search="selectEmail" @on-select="setEmail" placeholder="请输入邮箱地址"></AutoComplete>
                         </Form-item>
+                    </Col>
+                </Row>
+            </div>
+            <!-- 账号信息 -->
+            <h2 class="m-title">账号信息<span>(密码为空表示不修改)</span></h2>
+            <div class="m-content">
+                <Row>
+                    <Col span="12">
+                    <Form-item label="密码：" prop="password">
+                        <Input type="password" v-model="infoForm.password" placeholder="请输入密码"></Input>
+                    </Form-item>
+                    </Col>
+                    <Col span="12">
+                    <Form-item label="确认密码：" prop="passwdCheck">
+                        <Input type="password" v-model="infoForm.passwdCheck" placeholder="请输入确认密码"></Input>
+                    </Form-item>
                     </Col>
                 </Row>
             </div>
@@ -80,13 +96,13 @@
         data() {
             return {
                 // 加载页面
-                pageLoading: true,
+                pageLoading: false,
                 // 页面描述
-                pageType: 'add',
-                // 用户编号
-                userId: '',                
+                pageType: 'add',                               
                 // 表单信息
                 infoForm: {
+                    // 用户编号
+                    userId: '',
                     // 创建时间
                     createdAt: '',                
                     // 真实姓名
@@ -99,16 +115,14 @@
                     mobile: '',
                     // 邮箱
                     email: '',
+                    // 密码
+                    password: '',
+                    // 确认密码
+                    passwdCheck: '',
                 },
                 // 验证规则
                 validate: {
                     realname: [{ required: true, message: '真实姓名不能为空', trigger: 'blur'}],
-                    birthdate: [{
-                        validator: (rule, value, callback) => {
-                            Validate.ValidBirthDate(value, callback, false);
-                        },
-                        trigger: 'change'
-                    }],
                     mobile: [
                         { required: true, message: '手机号码不能为空', trigger: 'blur'},
                         { pattern: Common.regMobile, message: '手机号码格式不正确', trigger: 'blur' }
@@ -116,7 +130,14 @@
                     email: [
                         { required: true, message: '邮箱不能为空', trigger: 'blur'},
                         { pattern: Common.regEmail, message: '邮箱格式不正确', trigger: 'change' }
-                    ]
+                    ],
+                    password: [{ pattern: Common.regPassword, message: '密码格式为8-16位字母和数字组合', trigger: 'blur' }],
+                    passwdCheck: [{
+                        validator: (rule, value, callback) => {
+                            Validate.ValidPwdCheck(this.infoForm.password, value, callback, false);
+                        },
+                        trigger: 'blur'
+                    }]
                 },
             }
         },
@@ -152,7 +173,7 @@
                 this.$refs[form].validate((valid) => {
                     if (valid) {
                         // 页面加载
-                        this.pageLoading = true;
+                        // this.pageLoading = true;
 
                         this.infoForm.face = this.getImageUrl;
                         
@@ -174,7 +195,7 @@
     }
 </script>
 
-<style lang="less" scoped>    
+<style lang="less" scoped>
     .m-operation {
         button, a {
             min-width: 80px;

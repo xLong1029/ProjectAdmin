@@ -213,7 +213,35 @@
                     }
                 ],
                 //表格信息
-                listData:[],
+                listData:[
+                    {
+                        id: 1,
+                        realname: 'xLong',
+                        gender: '女',
+                        mobile: '18376686974',
+                        email: 'by_xlong@yeah.net',
+                        createTime: '2018-2-28',
+                        enabledState: 1
+                    },
+                    {
+                        id: 2,
+                        realname: 'Lio.Huang',
+                        gender: '男',
+                        mobile: '17777075292',
+                        email: 'lio.huang@qq.com',
+                        createTime: '2018-2-28',
+                        enabledState: 1
+                    },
+                    {
+                        id: 2,
+                        realname: '肖健',
+                        gender: '女',
+                        mobile: '13737147607',
+                        email: 'xiaojian@zhujia.com',
+                        createTime: '2018-2-28',
+                        enabledState: 1
+                    }
+                ],
             }
         },
         created(){
