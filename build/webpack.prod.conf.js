@@ -15,7 +15,8 @@ var webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
-      extract: true
+      // 默认是true，改为false可以解决项目打包后字体图标找不到的问题
+      extract: false
     })
   },
   devtool: config.build.productionSourceMap ? '#source-map' : false,
