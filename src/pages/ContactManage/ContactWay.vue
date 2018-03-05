@@ -5,9 +5,9 @@
         <Form v-else ref="infoForm" :model="infoForm" :rules="validate" :label-width="120">
             <Row>
                 <Col span="12">
-                    <Form-item label="公司地址：" prop="companyAddr">
+                    <!-- <Form-item label="公司地址：" prop="companyAddr">
                         <Input v-model="infoForm.companyAddr" placeholder="请输入公司地址"></Input>
-                    </Form-item>
+                    </Form-item> -->
                     <Form-item label="联系人：" prop="contactMan">
                         <Input v-model="infoForm.contactMan" placeholder="请输入联系人姓名"></Input>
                     </Form-item>
@@ -36,7 +36,7 @@
                 // 表单信息
                 infoForm: {
                     // 公司地址
-                    companyAddr: '',
+                    // companyAddr: '',
                     // 联系人
                     contactMan: '',            
                     // 联系人电话
@@ -46,7 +46,7 @@
                 },
                 // 验证规则
                 validate: {
-                    companyAddr: [{ required: true, message: '公司地址不能为空', trigger: 'blur'}],
+                    // companyAddr: [{ required: true, message: '公司地址不能为空', trigger: 'blur'}],
                     contactMan: [{ required: true, message: '联系人不能为空', trigger: 'blur'}],
                     contactPhone: [{ required: true, message: '电话不能为空', trigger: 'blur'}],
                     contactEmail: [{ required: true, message: '邮箱不能为空', trigger: 'blur'}]
