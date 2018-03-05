@@ -3,22 +3,28 @@
         <!-- 按条件查询 -->
         <div class="m-query-form">
             <Form ref="queryForm" :model="queryForm" :rules="queryValid">
-                <FormItem class="query-item">
-                    <Input v-model="queryForm.id" placeholder="广播编号"></Input>
+                <FormItem class="query-item" prop="id">
+                    <Input v-model="queryForm.id" placeholder="消息编号"></Input>
                 </FormItem>
-                <FormItem prop="msgContent" class="query-item">
-                    <Input v-model="queryForm.msgContent" placeholder="广播内容"></Input>
+                <FormItem class="query-item" prop="companyName">
+                    <Input v-model="queryForm.companyName" placeholder="公司名称"></Input>
+                </FormItem>
+                <FormItem class="query-item" prop="linkMan">
+                    <Input v-model="queryForm.linkMan" placeholder="联系人姓名"></Input>
+                </FormItem>
+                <FormItem class="query-item" prop="linkManPhone">
+                    <Input v-model="queryForm.linkManPhone" placeholder="联系人电话"></Input>
                 </FormItem>
                 <FormItem class="fl" prop="date">
                     <Date-picker class="query-item" type="date" v-model="queryForm.sTime" placement="bottom-end" placeholder="请选择开始日期" @on-change="getStartDate"></Date-picker>
                     <Date-picker class="query-item" type="date" v-model="queryForm.eTime" placement="bottom-end" placeholder="请选择结束日期" @on-change="getEndDate"></Date-picker>
                     <div class="clearfix"></div>
                 </FormItem>
-                <FormItem class="query-item">
-                    <Select v-model="queryForm.enabledState" placeholder="展示状态">
+                <FormItem class="query-item" prop="emdnaledState">
+                    <Select v-model="queryForm.dealState" placeholder="处理状态">
                         <Option value="">全部</Option>
-                        <Option value="1">启用</Option>
-                        <Option value="-1">禁用</Option>
+                        <Option value="1">已处理</Option>
+                        <Option value="-1">待处理</Option>
                     </Select>
                 </FormItem>
                 <FormItem class="fl">
@@ -30,10 +36,7 @@
         </div>
         <!-- 操作按钮 -->
         <div class="m-operation">
-            <Button class="operation-btn" type="primary" @click="addCase">新增</Button>
-            <Button class="operation-btn" :disabled="selectList.length == 0" type="warning" @click="deleteData">删除</Button>
-            <Button class="operation-btn" :disabled="selectList.length == 0" type="primary" @click="enableOrDisable(1)">启用</Button>
-            <Button class="operation-btn" :disabled="selectList.length == 0" type="warning" @click="enableOrDisable(-1)">禁用</Button>
+            <Button class="operation-btn" :disabled="selectList.length == 0" type="primary" @click="deleteData">删除</Button>
             <div class="clearfix"></div>
         </div>
         <!--  加载判断 -->
@@ -65,20 +68,41 @@
             <div class="clearfix"></div>
         </div>
         <!-- 新增窗口-->
-        <Modal v-model="showModal" width="500" @on-cancel="closeModal('paramsForm')">
+        <Modal v-model="showModal" width="500" @on-cancel="closeModal">
             <p slot="header">
-                <span v-text="paramsForm.msgContent == '' ? '新增案例' : '编辑案例'"></span>
+                消息详情
             </p>
             <div>
-                <Form ref="paramsForm" :model="paramsForm" :rules="paramsValid" :label-width="100">
-                    <FormItem label="广播内容：" prop="msgContent">
-                        <Input v-model="paramsForm.msgContent" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入广播内容"></Input>
-                    </FormItem>
-                </Form>
+                <table cellspacing="0" cellpadding="0" width="100%" class="m-table-info">
+                    <tr>
+                        <th>公司名称：</th>
+                        <td>{{ paramsForm.companyName }}</td>
+                    </tr>
+                    <tr>
+                        <th>联系人姓名：</th>
+                        <td>{{ paramsForm.linkMan }}</td>
+                    </tr>
+                    <tr>
+                        <th>联系人电话：</th>
+                        <td>{{ paramsForm.linkManPhone }}</td>
+                    </tr>
+                    <tr>
+                        <th>公司简介：</th>
+                        <td>{{ paramsForm.companyInfo }}</td>
+                    </tr>
+                    <tr>
+                        <th>处理状态：</th>
+                        <td>
+                            <span v-if="paramsForm.dealState == 1" class="status-success">已处理</span>
+                            <span v-else class="status-wait">待处理</span>
+                        </td>
+                    </tr>
+                </table>
             </div>
             <div slot="footer">
-                <Button size="large" @click="closeModal('paramsForm')">取消</Button>
-                <Button type="primary" size="large" @click="operation('paramsForm', operateType)">确定</Button>
+                <Button size="large" @click="closeModal">取消</Button>
+                <Button v-if="paramsForm.dealState == 1" type="primary" size="large" @click="closeModal">确定</Button>
+                <Button v-else type="primary" size="large" @click="operation(paramsForm.id)">处理</Button>
             </div>
         </Modal>
     </div>
@@ -113,32 +137,35 @@
                 caseTypeList: [],
                 // 查询表单
                 queryForm: {
-                    // 广播编号
+                    // 消息编号
                     id: '',
-                    // 广播内容
-                    msgContent: '',
+                    // 公司名称
+                    companyName: '',
+                    // 联系人姓名
+                    linkMan: '',
+                    // 联系人电话
+                    linkManPhone: '',
                     // 起始时间
                     sTime: '',
                     // 结束时间
                     eTime: '',
                     // 状态
-                    enabledState: '',
+                    dealState: '',
                 },
                 // 查询验证
                 queryValid: {},
                 // 参数表单
                 paramsForm: {
-                    id: '',
-                    msgContent: '',                    
+                    id: '',                                        
                     companyName: '',
-                    caseType: ''
+                    linkMan: '',
+                    linkManPhone: '',
+                    companyInfo: '',
+                    dealState: ''
                 },
                 // 表单验证
                 paramsValid: {
-                    msgContent:[
-                        { required: true, message: '广播内容不能为空', trigger: 'blur' },
-                        { type: 'string', max: 30, message: '内容不可以超过30个字', trigger: 'blur' }
-                    ],
+                    linkManPhone:[{ pattern: Common.regMobile , message: '手机号码格式不正确', trigger: 'blur' }],
                 },
                 // 是否显示弹窗
                 showModal: false,
@@ -154,13 +181,23 @@
                         align: 'center',
                     },
                     {
-                        title: '广播编号',
+                        title: '消息编号',
                         key: 'id',
                         align: 'center',
                     },
                     {
-                        title: '广播内容',
-                        key: 'msgContent',
+                        title: '公司名称',
+                        key: 'companyName',
+                        align: 'center'
+                    },
+                    {
+                        title: '联系人姓名',
+                        key: 'linkMan',
+                        align: 'center'
+                    },
+                    {
+                        title: '联系人电话',
+                        key: 'linkManPhone',
                         align: 'center'
                     },
                     {
@@ -170,14 +207,14 @@
                     },
                     {
                         title: '状态',
-                        key: 'enabledState',
+                        key: 'dealState',
                         align: 'center',
                         render: (h, params) => {
                             return h('span', {
 								attrs: {
-									class: params.row.enabledState == 1 ? 'status-success' : 'status-fail',
+									class: params.row.dealState == 1 ? 'status-success' : 'status-wait',
 								}
-							}, params.row.enabledState == 1 ? '启用' : '禁用');
+							}, params.row.dealState == 1 ? '已处理' : '待处理');
                         }
                     },
                     {
@@ -187,7 +224,7 @@
                         align: 'center',
                         render: (h, params) => {
                             return h('div', [
-                                tableSetting.popUp(h, params, this, '编辑', 0),
+                                tableSetting.popUp(h, params, this, '查看详情', 0),
                             ]);                          
                         }
                     }
@@ -196,21 +233,27 @@
                 listData:[
                     {
                         id: 1,
-                        msgContent: '恭喜SOLO公司成功申请了牛逼轰轰的项目！！',
+                        companyName: '六六六有限责任公司',
+                        linkMan: '小六子',
+                        linkManPhone: '18376686974',
                         createTime: '2018-2-28',
-                        enabledState: 1
+                        dealState: 1
                     },
                     {
                         id: 2,
-                        msgContent: '恭喜xLong成功申请了牛逼轰轰的项目！！',
+                        companyName: '六六六有限责任公司',
+                        linkMan: '小六子',
+                        linkManPhone: '18376686974',
                         createTime: '2018-2-28',
-                        enabledState: 1
+                        dealState: -1
                     },
                     {
                         id: 3,
-                        msgContent: '恭喜Lio.Huang成功申请了牛逼轰轰的项目！！',
+                        companyName: '六六六有限责任公司',
+                        linkMan: '小六子',
+                        linkManPhone: '18376686974',
                         createTime: '2018-2-28',
-                        enabledState: 1
+                        dealState: -1
                     }
                 ],
             }
@@ -231,56 +274,44 @@
                 // 设置是否查询状态
                 if(query){
                     this.isQuery = true;
-                    this.getFilterList();
                 }
                 else{
                     this.isQuery = false;
-                    this.getAllList();
                 }
-            },
-            // 设置列表数据
-            setListData(result){
             },
             // 打开弹窗
             openModel(params){
                 this.showModal = true;
-                this.paramsForm.msgContent = params.msgContent;
                 this.paramsForm.id = params.id;
+                this.paramsForm.companyName = params.companyName;
+                this.paramsForm.linkMan = params.linkMan;
+                this.paramsForm.linkManPhone = params.linkManPhone;
+                this.paramsForm.companyInfo = '这里是六六六的公司简介，简直666到不行了';
+                this.paramsForm.dealState = params.dealState;               
             },
             // 关闭弹窗
-            closeModal(name){
+            closeModal(){
                 this.showModal = false;
-                // 数据初始化（重置）
-                this.$refs[name].resetFields();
+                this.paramsForm = {};
             },
             // 弹窗操作
-            operation(name, type){
-                // 表单验证
-                this.$refs[name].validate((valid)=>{
-                    if(valid){
-                        this.paramsForm.type = parseInt(this.paramsForm.type);
-                        // 操作
-                        if(type == 1) this.addData();
-                        else if(type == 2) this.EditData();
-                        // 延迟关闭
-                        setTimeout(() => {
-                            this.closeModal(name);
-                        }, 500);
-                    }
-                    else this.$Message.error('提交失败！填写有误');
-                })
-            },
-            addCase(){
-                this.showModal = true;
-                this.operateType = 1;
-            },
+            operation(id){
+                this.closeModal();
+            }
         }
     }
 </script>
 
 <style lang="less" scoped>
     @import "../../assets/less/table_list";
-    .query-item{
-        width: 150px;
+    .m-table-info {
+        th,td {
+            padding: 12px;
+            vertical-align: top;
+        }
+        th {
+            width: 110px;
+            text-align: right;
+        }
     }
 </style>

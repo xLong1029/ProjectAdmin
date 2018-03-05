@@ -3,16 +3,16 @@
         <!-- 按条件查询 -->
         <div class="m-query-form">
             <Form ref="queryForm" :model="queryForm" :rules="queryValid">
-                <FormItem class="query-item">
+                <FormItem class="query-item" prop="id">
                     <Input v-model="queryForm.id" placeholder="案例编号"></Input>
                 </FormItem>
-                <FormItem prop="caseName" class="query-item">
+                <FormItem class="query-item" prop="caseName">
                     <Input v-model="queryForm.caseName" placeholder="项目名称"></Input>
                 </FormItem>
-                <FormItem prop="companyName" class="query-item">
+                <FormItem class="query-item" prop="companyName">
                     <Input v-model="queryForm.companyName" placeholder="公司名称"></Input>
                 </FormItem>
-                <FormItem class="query-item">
+                <FormItem class="query-item" prop="caseType">
                     <Select v-model="queryForm.caseType" placeholder="立项专项">
                         <Option value="" >全部</Option>
                         <Option v-for="(item, index) in caseTypeList" :value="item.name" :key="index">{{ item.name }}</Option>
@@ -23,7 +23,7 @@
                     <Date-picker class="query-item" type="date" v-model="queryForm.eTime" placement="bottom-end" placeholder="请选择结束日期" @on-change="getEndDate"></Date-picker>
                     <div class="clearfix"></div>
                 </FormItem>
-                <FormItem class="query-item">
+                <FormItem class="query-item" prop="enabledState">
                     <Select v-model="queryForm.enabledState" placeholder="展示状态">
                         <Option value="">全部</Option>
                         <Option value="1">启用</Option>
@@ -40,9 +40,9 @@
         <!-- 操作按钮 -->
         <div class="m-operation">
             <Button class="operation-btn" type="primary" @click="addCase">新增</Button>
-            <Button class="operation-btn" :disabled="selectList.length == 0" type="warning" @click="deleteData">删除</Button>
+            <Button class="operation-btn" :disabled="selectList.length == 0" type="primary" @click="deleteData">删除</Button>
             <Button class="operation-btn" :disabled="selectList.length == 0" type="primary" @click="enableOrDisable(1)">启用</Button>
-            <Button class="operation-btn" :disabled="selectList.length == 0" type="warning" @click="enableOrDisable(-1)">禁用</Button>
+            <Button class="operation-btn" :disabled="selectList.length == 0" type="primary" @click="enableOrDisable(-1)">禁用</Button>
             <div class="clearfix"></div>
         </div>
         <!--  加载判断 -->
@@ -272,11 +272,9 @@
                 // 设置是否查询状态
                 if(query){
                     this.isQuery = true;
-                    this.getFilterList();
                 }
                 else{
                     this.isQuery = false;
-                    this.getAllList();
                 }
             },
             // 设置列表数据
@@ -323,7 +321,4 @@
 
 <style lang="less" scoped>
     @import "../../assets/less/table_list";
-    .query-item{
-        width: 150px;
-    }
 </style>

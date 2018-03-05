@@ -10,7 +10,7 @@ export default {
 	data() {
 		return {
 			// 判断是否是查询状态
-            isQuery: false,
+			isQuery: false
 		}
 	},
 	methods: {
@@ -48,39 +48,11 @@ export default {
 		},
 		// 重置查询内容
 		resetQuery(form){
-			this.clearQuery();
+			// this.clearQuery();
 			this.$refs[form].resetFields();
+			if(this.queryForm.sTime) this.queryForm.sTime = '';
+			if(this.queryForm.eTime) this.queryForm.eTime = '';
 			this.getTableList();
-		},
-		// 获取筛选列表
-		getFilterList(){
-			if(this.queryForm.eTime == '') this.queryForm.eTime = (new Date()).toLocaleDateString();
-			// this.apiGetFilter()
-			// .then(res => {
-			//     this.pageLoading = false;
-			//     if(res.code == 200){
-			//         // 设置数据
-			// 		this.setListData(res.data);
-			// 		// 设置页码
-			// 		this.setPage(res.page);
-			//     }
-			//     else this.$Message.error('获取数据失败!');
-			// })
-			// .catch(err => console.log(err))
-		},
-		// 获取所有列表
-		getAllList(){
-			// this.apiGetAll().then(res => {
-			// 	this.pageLoading = false;
-			// 	if(res.code == 200){
-			// 		// 设置数据
-			// 		this.setListData(res.data);
-			// 		// 设置页码
-			// 		this.setPage(res.page);
-			// 	}
-			// 	else this.$Message.error('获取数据失败!');
-			// })
-			// .catch(err => console.log(err))
-		},
+		}
 	}
 }

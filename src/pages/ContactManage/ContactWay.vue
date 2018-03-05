@@ -16,13 +16,12 @@
                     </Form-item>
                     <Form-item label="联系人邮箱：" prop="contactEmail">
                         <Input v-model="infoForm.contactPhone" placeholder="请输入联系邮箱"></Input>
-                    </Form-item>                 
+                    </Form-item>
+                    <Form-item>
+                        <Button class="fl" type="primary" @click="submit('infoForm', 'edit')">确认提交</Button>
+                    </Form-item>              
                 </Col>
             </Row>
-            <!-- 操作按钮 -->
-            <div class="m-operation">
-                <Button class="fl" type="primary" @click="submit('infoForm', 'edit')">确认提交</Button>
-            </div>
         </Form>
     </div>
 </template>

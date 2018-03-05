@@ -21,8 +21,11 @@ import StoreAccount from 'pages/AccountManage/StoreAccount'
 // 案例管理
 import CaseManage from 'pages/CaseManage/CaseList'
 
-// 广播消息
-import Broadcast from 'pages/Broadcast/MsgList'
+// 广播管理
+import Broadcast from 'pages/Broadcast/BroadcastList'
+
+// 申报消息
+import DeclareMsg from 'pages/DeclareMsg/MsgList'
 
 // 联系设置
 import CompanyInfo from 'pages/ContactManage/CompanyInfo'
@@ -54,8 +57,10 @@ const RouterMap = [
             { path: '/AccountManage/Store', name: 'StoreAccount', component: StoreAccount },
             // 案例管理
             { path: '/CaseManage/List', name: 'CaseManage', component: CaseManage },
-            // 案例管理
+            // 广播管理
             { path: '/Broadcast/List', name: 'Broadcast', component: Broadcast },
+            // 申报消息
+            { path: '/DeclareMsg/List', name: 'DeclareMsg', component: DeclareMsg },
             // 联系设置
             { path: '/ContactManage/CompanyInfo', name: 'CompanyInfo', component: CompanyInfo }, 
             { path: '/ContactManage/ContactWay', name: 'ContactWay', component: ContactWay },  

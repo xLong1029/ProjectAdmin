@@ -73,7 +73,13 @@
                 {
                     name: 'Broadcast',
                     icon: 'android-volume-up',
-                    text: '广播消息',
+                    text: '广播管理',
+                    submenu: []
+                },
+                {
+                    name: 'DeclareMsg',
+                    icon: 'android-mail',
+                    text: '申报消息',
                     submenu: []
                 },
                 {
