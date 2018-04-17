@@ -28,7 +28,7 @@
     // 组件
     import Loading from 'components/Common/Loading'
     // Api方法
-    import Api from 'api/api.js'
+    // import Api from 'api/api.js'
     // Vue-quill-editor
     import Quill from 'quill'
     // QullEditor图片上传配置
