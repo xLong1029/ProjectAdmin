@@ -18,6 +18,9 @@ import ChangePwd from 'pages/Profile/ChangePwd'
 import AccountManage from 'pages/AccountManage/AccountList'
 import StoreAccount from 'pages/AccountManage/StoreAccount'
 
+//文章管理
+import ArticleList from 'pages/ArticleManage/ArticleList'
+
 // 案例管理
 import CaseManage from 'pages/CaseManage/CaseList'
 
@@ -37,7 +40,7 @@ import Err404 from 'pages/Error/Err404'
 
 const RouterMap = [
     // 后台登录
-    { path: '/Login', name: 'Login', component: Login }, 
+    { path: '/Login', name: 'Login', component: Login },
     // 后台管理页
     {
       path: '/',
@@ -55,6 +58,8 @@ const RouterMap = [
             // 账户管理
             { path: '/AccountManage/List', name: 'AccountManage', component: AccountManage },
             { path: '/AccountManage/Store', name: 'StoreAccount', component: StoreAccount },
+            //文章管理
+            { path:'/ArticleManage/ArticleList', name:'ArticleList', component: ArticleList},
             // 案例管理
             { path: '/CaseManage/List', name: 'CaseManage', component: CaseManage },
             // 广播管理
@@ -62,8 +67,8 @@ const RouterMap = [
             // 申报消息
             { path: '/DeclareMsg/List', name: 'DeclareMsg', component: DeclareMsg },
             // 联系设置
-            { path: '/ContactManage/CompanyInfo', name: 'CompanyInfo', component: CompanyInfo }, 
-            { path: '/ContactManage/ContactWay', name: 'ContactWay', component: ContactWay },  
+            { path: '/ContactManage/CompanyInfo', name: 'CompanyInfo', component: CompanyInfo },
+            { path: '/ContactManage/ContactWay', name: 'ContactWay', component: ContactWay },
             // 404
             { path: '/404', name: '404', component: Err404 },
         ]

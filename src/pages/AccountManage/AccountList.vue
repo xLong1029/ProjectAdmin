@@ -41,7 +41,7 @@
         </div>
         <!--  加载判断 -->
         <Loading v-if="pageLoading"></Loading>
-        <div v-else>            
+        <div v-else>
             <!-- 用户列表 -->
             <Table
                 :row-class-name="rowClassName"
@@ -128,18 +128,17 @@
                     }]
                 },
                 // 用户列表
-                userList:[
+                userList: [
                     {
-                        title: '全选',
+                        title:'全选',
                         type: 'selection',
-                        key: 'selectAll',
-                        width: '60',
-                        align: 'center',
+                        width: 60,
+                        align: 'center'
                     },
                     {
                         title: '用户编号',
                         key: 'id',
-                        align: 'center',
+                        align: 'center'
                     },
                     {
                         title: '真实姓名',
@@ -157,9 +156,9 @@
                         align: 'center'
                     },
                     {
-                        title: '邮箱',
-                        key: 'email',
-                        align: 'center'
+                        title:'邮箱',
+                        key:'email',
+                        align:'center'
                     },
                     {
                         title: '创建时间',
@@ -167,26 +166,25 @@
                         align: 'center',
                     },
                     {
-                        title: '状态',
-                        key: 'enabledState',
-                        align: 'center',
-                        render: (h, params) => {
-                            return h('span', {
-								attrs: {
-									class: params.row.enabledState == 1 ? 'status-success' : 'status-fail',
-								}
-							}, params.row.enabledState == 1 ? '启用' : '禁用');
+                        title:'状态',
+                        key:'enabledState',
+                        align:'center',
+                        render:(h,params)=>{
+                            return h('span',{
+                                attrs:{
+                                    class: params.row.enabledState == 1 ? 'status-success' : 'status-fail',
+                                }
+                            },params.row.enabledState == 1 ? '启用' : '禁用')
                         }
                     },
                     {
                         title: '操作',
-                        width: '120',
                         key: 'operation',
                         align: 'center',
                         render: (h, params) => {
                             return h('div', [
                                 tableSetting.gotoDetail(h, params, this, '查看详情', 'StoreAccount'),
-                            ]);                          
+                            ]);
                         }
                     }
                 ],
@@ -245,6 +243,7 @@
             },
             // 设置列表数据
             setListData(result){
+
             },
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
