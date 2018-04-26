@@ -20,6 +20,7 @@ import StoreAccount from 'pages/AccountManage/StoreAccount'
 
 //文章管理
 import ArticleList from 'pages/ArticleManage/ArticleList'
+import ArticleDetail from 'pages/ArticleManage/ArticleDetail'
 
 // 案例管理
 import CaseManage from 'pages/CaseManage/CaseList'
@@ -60,6 +61,7 @@ const RouterMap = [
             { path: '/AccountManage/Store', name: 'StoreAccount', component: StoreAccount },
             //文章管理
             { path:'/ArticleManage/ArticleList', name:'ArticleList', component: ArticleList},
+            { path:'/ArticleManage/ArticleDetail', name:'ArticleDetail', component: ArticleDetail},
             // 案例管理
             { path: '/CaseManage/List', name: 'CaseManage', component: CaseManage },
             // 广播管理

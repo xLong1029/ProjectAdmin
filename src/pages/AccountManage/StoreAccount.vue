@@ -25,7 +25,7 @@
                         </Form-item>
                         <Form-item label="手机号码：" prop="mobile">
                             <Input v-model="infoForm.mobile" placeholder="请输入手机号码"></Input>
-                        </Form-item>                        
+                        </Form-item>
                     </Col>
                     <Col span="12">
                         <Form-item label="头像：" style="margin-bottom:16px;">
@@ -86,7 +86,7 @@
     import JsonData from 'mock/data.json'
     // Vuex
     import { mapGetters } from 'vuex'
-    
+
     export default {
         components: { Loading, CompanyName, SingleImage },
         mixins: [ CitySelect, EmailComplete ],
@@ -98,13 +98,13 @@
                 // 加载页面
                 pageLoading: false,
                 // 页面描述
-                pageType: 'add',                               
+                pageType: 'add',
                 // 表单信息
                 infoForm: {
                     // 用户编号
                     userId: '',
                     // 创建时间
-                    createdAt: '',                
+                    createdAt: '',
                     // 真实姓名
                     realname: '',
                     // 头像
@@ -144,14 +144,14 @@
         created() {
             // 初始化图片和输入框
             Common.InitPicStore(this);
-     
+
             // 判断是否是编辑页
             if(this.$route.query.id){
                 // 获取用户编号
                 this.userId = this.$route.query.id;
                 this.$store.commit('SET_BREADCRUMB', [
                     { name: '首页', path: '/Home' },
-                    { name: '账户列表', path: '/Examples/AccountList' },
+                    { name: '账户列表', path: '/AccountManage/List' },
                     { name: '账户详情', path: '' }
                 ]);
                 // 获取账户详情
@@ -176,7 +176,7 @@
                         // this.pageLoading = true;
 
                         this.infoForm.face = this.getImageUrl;
-                        
+
                         if(this.pageType == 'add'){
                             // 新增用户
                         }
@@ -186,7 +186,7 @@
                         }
                     }
                     else this.$Message.error('提交失败！填写有误');
-                })    
+                })
             },
             // 获取账户详情
             getDetail(){

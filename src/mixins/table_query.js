@@ -14,10 +14,14 @@ export default {
 		}
 	},
 	methods: {
+    //获取日期
+    getDate(date){
+      this.infoForm.publishDate= date
+    },
 		// 获取查询开始日期
 		getStartDate(date) {
 			console.log('get start date:' + date);
-			this.queryForm.sTime = date;
+      this.queryForm.sTime = date;
 		},
 		// 获取查询结束日期
 		getEndDate(date) {
@@ -33,7 +37,7 @@ export default {
 			if(getValid == 'valid'){
 				// 表单验证
 				this.$refs[form].validate((valid)=>{
-					// 传值true表示要筛选用户列表            
+					// 传值true表示要筛选用户列表
 					if (valid) this.getTableList(true);
 					else this.$Message.warning('查询失败！填写有误');
 				})
@@ -41,7 +45,7 @@ export default {
 			else this.getTableList(true);
 		},
 		// 删除查询对象属性（清空对象）
-		clearQuery(){		
+		clearQuery(){
 			for(let key in this.queryForm){
 				delete this.queryForm[key];
 			}
