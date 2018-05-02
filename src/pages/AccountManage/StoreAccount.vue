@@ -11,29 +11,36 @@
                         <Form-item v-if="pageType == 'edit'" label="创建时间：">
                             <span>{{ infoForm.createdAt }}</span>
                         </Form-item>
-                        <Form-item v-if="pageType == 'edit'" label="用户编号：">
-                            <span>{{ infoForm.userId }}</span>
-                        </Form-item>
+
                         <Form-item label="真实姓名：" prop="realname">
                             <Input v-model="infoForm.realname" placeholder="请输入真实姓名"></Input>
                         </Form-item>
-                        <Form-item label="性别：" prop="gender">
-                            <Radio-group v-model="infoForm.gender">
-                                <Radio label="男">男</Radio>
-                                <Radio label="女">女</Radio>
-                            </Radio-group>
-                        </Form-item>
+                        <!--<Form-item label="性别：" prop="gender">-->
+                            <!--<Radio-group v-model="infoForm.gender">-->
+                                <!--<Radio label="男">男</Radio>-->
+                                <!--<Radio label="女">女</Radio>-->
+                            <!--</Radio-group>-->
+                        <!--</Form-item>-->
                         <Form-item label="手机号码：" prop="mobile">
                             <Input v-model="infoForm.mobile" placeholder="请输入手机号码"></Input>
                         </Form-item>
                     </Col>
                     <Col span="12">
-                        <Form-item label="头像：" style="margin-bottom:16px;">
-                            <!-- 组件-图片上传-单图片显示 -->
-                            <SingleImage :preview="true" size-hint="100*100px"></SingleImage>
+                        <Form-item v-if="pageType == 'edit'" label="用户编号：">
+                            <span>{{ infoForm.userId }}</span>
                         </Form-item>
+                        <!--<Form-item label="头像：" style="margin-bottom:16px;">-->
+                            <!--&lt;!&ndash; 组件-图片上传-单图片显示 &ndash;&gt;-->
+                            <!--<SingleImage :preview="true" size-hint="100*100px"></SingleImage>-->
+                        <!--</Form-item>-->
                         <Form-item label="邮箱：" prop="email">
                             <AutoComplete v-model="infoForm.email" :data="emailList" @on-search="selectEmail" @on-select="setEmail" placeholder="请输入邮箱地址"></AutoComplete>
+                        </Form-item>
+                        <Form-item label="类型：" prop="type">
+                            <RadioGroup v-model="infoForm.type">
+                                <Radio label="1">普通用户</Radio>
+                                <Radio label="2">管理员</Radio>
+                            </RadioGroup>
                         </Form-item>
                     </Col>
                 </Row>
@@ -108,9 +115,9 @@
                     // 真实姓名
                     realname: '',
                     // 头像
-                    face: require('@/assets/images/default-face.jpg'),
+//                    face: require('@/assets/images/default-face.jpg'),
                     // 性别
-                    gender: '',
+//                    gender: '',
                     // 手机号
                     mobile: '',
                     // 邮箱
@@ -119,6 +126,7 @@
                     password: '',
                     // 确认密码
                     passwdCheck: '',
+                    type:'1'
                 },
                 // 验证规则
                 validate: {
@@ -137,7 +145,10 @@
                             Validate.ValidPwdCheck(this.infoForm.password, value, callback, false);
                         },
                         trigger: 'blur'
-                    }]
+                    }],
+                    type:[
+                        { required: true, message: '类型不能为空', trigger: 'blur'}
+                    ]
                 },
             }
         },
@@ -162,7 +173,7 @@
                 this.pageLoading = false;
                 this.$store.commit('SET_BREADCRUMB', [
                     { name: '首页', path: '/Home' },
-                    { name: '账户列表', path: '/Examples/AccountList' },
+                    { name: '账户列表', path: '/AccountManage/AccountList' },
                     { name: '新增账户', path: '' }
                 ]);
             }

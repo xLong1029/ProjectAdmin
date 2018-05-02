@@ -88,7 +88,7 @@
         created(){
             this.$store.commit('SET_BREADCRUMB', [
                 { name: '首页', path: '/Home' },
-                { name: '文章列表', path: '/ArticleManage/ArticleList' },
+                { name: '文章列表', path: '/ArticleManage/List' },
                 { name: '文章详情', path: '' }
             ]);
         },

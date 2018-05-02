@@ -65,7 +65,7 @@
                       submenu: []
                   },
                   {
-                      name: 'ArticleList',
+                      name: 'ArticleManage',
                       icon: 'document-text',
                       text: '文章管理',
                       submenu: []
@@ -88,21 +88,21 @@
   //                    text: '申报消息',
   //                    submenu: []
   //                },
-                  {
-                      name: 'ContactManage',
-                      icon: 'ios-telephone',
-                      text: '联系设置',
-                      submenu: [
-                          {
-                              name: 'CompanyInfo',
-                              text: '公司介绍'
-                          },
-                          {
-                              name: 'ContactWay',
-                              text: '联系方式'
-                          },
-                      ]
-                  },
+//                  {
+//                      name: 'ContactManage',
+//                      icon: 'ios-telephone',
+//                      text: '联系设置',
+//                      submenu: [
+//                          {
+//                              name: 'CompanyInfo',
+//                              text: '公司介绍'
+//                          },
+//                          {
+//                              name: 'ContactWay',
+//                              text: '联系方式'
+//                          },
+//                      ]
+//                  },
               ],
           }
       },
