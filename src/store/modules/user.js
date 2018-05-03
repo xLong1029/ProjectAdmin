@@ -1,4 +1,4 @@
-// import Api from 'api/api.js'
+import Login from 'api/Login.js'
 import LoginCheck from 'common/login_check.js'
 import { GetCookie } from 'common/important'
 
@@ -11,7 +11,7 @@ const user = {
 	  	// 用户头像
 	  	userFace:'',
 	  	// 昵称
-	  	nickName: '',	  	
+	  	nickName: '',
 	  	// 用户ID
 	  	userId: '',
 	},
@@ -32,7 +32,7 @@ const user = {
 	    },
 	    SET_USER_NICKNAME: (state, nickName) => {
 	      state.nickName = nickName;
-	    },	    
+	    },
 	    SET_USER_ID: (state, userId) => {
 	      state.userId = userId;
 	    },
@@ -41,18 +41,18 @@ const user = {
 	actions: {
 			// Token验证
 			CheckToken ({ commit , state }) {
-					// Api.GetUserInfo(GetCookie('pAppToken'))
-					// .then(res => {
-					// 		// 登录成功
-					// 		if(res.code == 200) LoginCheck.setAccount(commit, res.data);
-					// 		// 登录失败
-					// 		else LoginCheck.clearAccount(commit);
-					// })
-					// .catch(err => LoginCheck.clearAccount(commit))
+        Login.TokenCheck(GetCookie('pAppToken'))
+					.then(res => {
+							// 登录成功
+							if(res.code == 200) LoginCheck.setAccount(commit, res.data);
+							// 登录失败
+							else LoginCheck.clearAccount(commit);
+					})
+					.catch(err => LoginCheck.clearAccount(commit))
 			},
 			// 登出
 			LogOut ({ commit, state }) {
-					LoginCheck.clearAccount(commit);           
+					LoginCheck.clearAccount(commit);
 			},
 	}
 }

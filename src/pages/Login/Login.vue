@@ -22,13 +22,14 @@
 	        <!-- <Form-item>
 	            <Button type="primary" long @click="">注册</Button>
 	        </Form-item> -->
-	        <div style="text-align:center">测试使用登录账号:18888888888密码:666666</div>
+	        <div style="text-align:center">测试使用登录账号:17777075292密码:mimashi123</div>
 	    </Form>
 	</div>
 </template>
 
 <script>
 	import { SetCookie, SetLocalS, GetLocalS, Encrypt, Decrypt } from 'common/important.js'
+  import Common from '@/common/common.js'
 	 // Api方法
 	 import Login from 'api/login.js'
 
@@ -46,13 +47,17 @@
 					// 密码
 					password: '',
 				},
+        // cdKey开始时间
+        startTime: '',
+        // cdKey结束时间
+        endTime: '',
 				// 记住密码
 				remeberPwd: false,
 				// 验证规则
 				validate: {
-                    username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
-                    password: [{ required: true, message: '登录密码不能为空', trigger: 'blur' }],
-                }
+          username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
+          password: [{ required: true, message: '登录密码不能为空', trigger: 'blur' }],
+        }
 			}
 		},
 		created() {
@@ -78,26 +83,34 @@
 			submit (form){
         this.$refs[form].validate((valid) => {
           if (valid) {
-            this.loading = false
+            this.loading = true
             Login.Login(this.loginForm).then(res=>{
-                console.log(res)
+              this.loading = false
+//              console.log(res)
+              if(res.code==200){
+                // token存cookie
+                SetCookie('pAppToken', res.data.token);
+                this.$store.commit('SET_USER_TOKEN', res.data.token);
+                this.$Message.success('登录成功!');
+                // 判断是否记住密码
+                if (this.remeberPwd) {
+                  // 本地存储用户名和密码
+                  SetLocalS('username', this.loginForm.username);
+                  SetLocalS('password', Encrypt(this.loginForm.password));
+                }
+                this.$router.push({ name: 'Main' });
+                return true;
+              }
+              else{
+                this.$Message.error(res.data.msg);
+              }
             }).catch(err=>{
-                console.log(err)
+              // 登录失败提示
+              this.$Message.error('服务器出错，请联系技术人员!');
+              this.loading = false;
             })
-						// token存cookie
-						SetCookie('pAppToken', 123456);
-						this.$store.commit('SET_USER_TOKEN', 123456);
-						// 判断是否记住密码
-						if (this.remeberPwd) {
-							// 本地存储用户名和密码
-							SetLocalS('username', this.loginForm.username);
-							SetLocalS('password', Encrypt(this.loginForm.password));
-						}
-						this.$Message.success('登录成功!');
-						// 跳转到后台主页
-//						this.$router.push({ name: 'Main' });
-            }
-            else this.$Message.error('登录失败!填写有误！');
+          }
+          else this.$Message.error('登录失败!填写有误！');
         })
       },
 		}

@@ -29,8 +29,8 @@
 </template>
 
 <script>
-    import Common from 'common/common.js'
-    import { mapGetters } from 'vuex'
+  import Common from 'common/common.js'
+  import { mapGetters } from 'vuex'
 
 	export default {
 		computed: {
@@ -111,5 +111,5 @@
         border-radius: 20px;
         -webkit-border-radius: 20px;
         -o-border-radius: 20px;
-    }  
+    }
 </style>

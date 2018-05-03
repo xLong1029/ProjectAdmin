@@ -54,7 +54,7 @@ export default {
     // type：1 最近一周，2 最近一个月，3 最近三个月
     SetDate: (type) => {
         const end = new Date();
-        const start = new Date();        
+        const start = new Date();
         switch(type){
             case 1: {
                 start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
@@ -76,14 +76,14 @@ export default {
         if(!date) return;
         if(typeof date =='string' && date.indexOf('-') != -1) return date;
         else{
-            let year = date.getFullYear(); 
-            let month = date.getMonth() + 1; 
-            let day = date.getDate(); 
-            let hour = date.getHours() > 9 ? date.getHours() : '0' + date.getHours(); 
+            let year = date.getFullYear();
+            let month = date.getMonth() + 1;
+            let day = date.getDate();
+            let hour = date.getHours() > 9 ? date.getHours() : '0' + date.getHours();
             let minute = date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes();
-            let second = date.getSeconds() > 9 ? date.getSeconds() : '0' + date.getSeconds(); 
-            return year + "-" + month + "-" + day + ' ' + hour + ':' + minute + ':' + second; 
-        }        
+            let second = date.getSeconds() > 9 ? date.getSeconds() : '0' + date.getSeconds();
+            return year + "-" + month + "-" + day + ' ' + hour + ':' + minute + ':' + second;
+        }
     },
     // 设置默认图片
     // type：1 显示默认头像，2 显示暂无图片
@@ -118,5 +118,19 @@ export default {
         if(document.exitFullscreen) document.exitFullscreen();
         else if(document.mozCancelFullScreen) document.mozCancelFullScreen();
         else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
-    }
+    },
+    // 获取cookie
+    GetCookie: (cname) => {
+      let name = cname + "=";
+      let ca = document.cookie.split(';');
+      for(let i=0; i<ca.length; i++) {
+        let c = ca[i].trim();
+        if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+      }
+      return "";
+    },
+    // 删除cookie
+    DelCookie: (cname) => {
+      document.cookie = `${cname}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+    },
 }
