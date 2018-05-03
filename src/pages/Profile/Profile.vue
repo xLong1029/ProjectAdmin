@@ -15,16 +15,16 @@
             <Form-item label="真实姓名：">
                 <Input v-model="editForm.realname" placeholder="请输入您的真实姓名" style="width:220px"></Input>
             </Form-item>
-            <Form-item label="头像：">
-                <!-- 组件-图片上传-单图片显示 -->
+            <!--<Form-item label="头像：">
+                &lt;!&ndash; 组件-图片上传-单图片显示 &ndash;&gt;
                 <SingleImage></SingleImage>
-            </Form-item>                           
+            </Form-item>
             <Form-item label="性别：" prop="gender">
                 <Radio-group v-model="editForm.gender">
                     <Radio label="男">男</Radio>
                     <Radio label="女">女</Radio>
                 </Radio-group>
-            </Form-item>
+            </Form-item>-->
             <Form-item>
                 <Button type="primary" @click="submit('editForm')">确认</Button>
             </Form-item>
@@ -61,14 +61,14 @@
                     // 真实姓名
                     realname: '',
                     // 头像图片地址
-                    userface: require('@/assets/images/default-face.jpg'),
-                    // 性别
-                    gender: '男',
+//                    userface: require('@/assets/images/default-face.jpg'),
+//                    // 性别
+//                    gender: '男',
                 },
 				// 验证规则
                 validate: {
                     nickname: [{ required: true, message: '昵称不能为空', trigger: 'blur' }],
-                    gender: [{ required: true, message: '请选择性别', trigger: 'change' }],
+//                    gender: [{ required: true, message: '请选择性别', trigger: 'change' }],
                 }
 			}
         },
@@ -111,7 +111,7 @@
                 // .then(res => {
                 //     // 获取到数据
                 //     if(res.code == 200){
-                //         this.pageLoading = false;					
+                //         this.pageLoading = false;
                 //         this.editForm = res.data.attributes;
                 //         // 设置头像
                 //         this.$store.commit('SET_IMAGE_URL', this.editForm.userface);

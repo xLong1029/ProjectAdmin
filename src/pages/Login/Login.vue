@@ -29,8 +29,8 @@
 
 <script>
 	import { SetCookie, SetLocalS, GetLocalS, Encrypt, Decrypt } from 'common/important.js'
-	// // Api方法
-	// import Api from 'api/api.js'
+	 // Api方法
+	 import Login from 'api/login.js'
 
 	export default {
 		data(){
@@ -76,8 +76,14 @@
 		methods:{
 			// 提交表单
 			submit (form){
-                this.$refs[form].validate((valid) => {
-                    if (valid) {
+        this.$refs[form].validate((valid) => {
+          if (valid) {
+            this.loading = false
+            Login.Login(this.loginForm).then(res=>{
+                console.log(res)
+            }).catch(err=>{
+                console.log(err)
+            })
 						// token存cookie
 						SetCookie('pAppToken', 123456);
 						this.$store.commit('SET_USER_TOKEN', 123456);
@@ -89,11 +95,11 @@
 						}
 						this.$Message.success('登录成功!');
 						// 跳转到后台主页
-						this.$router.push({ name: 'Main' });
-                    }
-                    else this.$Message.error('登录失败!填写有误！');
-                })
-            },
+//						this.$router.push({ name: 'Main' });
+            }
+            else this.$Message.error('登录失败!填写有误！');
+        })
+      },
 		}
 	}
 </script>
