@@ -10,12 +10,11 @@ export default {
 	// 设置账户信息
 	setAccount: (_commit, info) => {
 		// 设置用户信息
-		_commit('SET_USER_FACE', info.attributes.userface);
-		_commit('SET_USER_NICKNAME', info.attributes.nickname);
+		_commit('SET_USER_NICKNAME', info.userName);
 		_commit('SET_USER_ID', info.id);
 	},
 	// 清空账户信息
-	clearAccount: (_commit) => {
+	clearAccount: (_commit) => {		
 		// 清除token
 		DelCookie('pAppToken');
 		_commit('SET_USER_TOKEN', '');
