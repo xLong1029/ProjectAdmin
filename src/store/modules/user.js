@@ -43,8 +43,6 @@ const user = {
 			CheckToken ({ commit , state }) {
         Login.TokenCheck(GetCookie('pAppToken'))
 					.then(res => {
-						console.log(res.code);
-						console.log(res);
 							// 登录成功
 							if(res.code == 200) LoginCheck.setAccount(commit, res.data);
 							// 登录失败
