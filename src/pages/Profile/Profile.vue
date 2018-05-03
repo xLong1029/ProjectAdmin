@@ -37,10 +37,9 @@
     import Loading from 'components/Common/Loading'
 	import SingleImage from 'components/Image/UploadImage/SingleImage'
 	// Api方法
-    // import Api from 'api/api.js'
+     import Account from 'api/account.js'
     // Veux
     import { mapGetters } from 'vuex'
-
     export default {
         components: {  Loading, SingleImage },
         computed: {
@@ -108,18 +107,20 @@
             // 获取个人资料
             getProfile(){
                 console.log(111111111)
-                // Api.GetUserInfo(this.token)
-                // .then(res => {
-                //     // 获取到数据
-                //     if(res.code == 200){
-                //         this.pageLoading = false;
-                //         this.editForm = res.data.attributes;
-                //         // 设置头像
-                //         this.$store.commit('SET_IMAGE_URL', this.editForm.userface);
-                //     }
-                //     else this.$Message.error('无该用户数据!');
-                // })
-                // .catch(err => console.log(err));
+                console.log(this.$store.getters.userId)
+                 Account.GetInfo(this.$store.getters.userId)
+                 .then(res => {
+                     // 获取到数据
+                      console.log(res)
+                     if(res.code == 200){
+                         this.pageLoading = false;
+                         this.editForm = res.data.attributes;
+                         // 设置头像
+//                         this.$store.commit('SET_IMAGE_URL', this.editForm.userface);
+                     }
+                     else this.$Message.error('无该用户数据!');
+                 })
+                 .catch(err => console.log(err));
             }
         }
 	}

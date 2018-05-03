@@ -92,6 +92,8 @@
                 SetCookie('pAppToken', res.data.token);
                 this.$store.commit('SET_USER_TOKEN', res.data.token);
                 this.$Message.success('登录成功!');
+                //存id
+                SetLocalS('pAppUserId',res.data.id)
                 // 判断是否记住密码
                 if (this.remeberPwd) {
                   // 本地存储用户名和密码

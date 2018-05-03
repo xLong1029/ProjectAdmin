@@ -71,6 +71,7 @@
 </template>
 
 <script>
+  import { SetCookie, SetLocalS, GetLocalS, Encrypt, Decrypt } from 'common/important.js'
     // 组件
     import Loading from '@/components/Common/Loading'
     // 通用JS
@@ -78,7 +79,7 @@
     // 通用JS
     import Validate from 'common/validate.js'
     // Api方法
-    // import Api from '@/api/api.js'
+     import Account from '@/api/Account.js'
     // 邮箱自动填充
     import EmailComplete from 'mixins/email_complete.js'
     // 表格设置
@@ -232,6 +233,7 @@
         methods: {
             // 获取表格列表
             getTableList(query){
+                console.log(GetLocalS('pAppUserId'))
                 // this.pageLoading = true;
                 // 设置是否查询状态
                 if(query){
@@ -240,6 +242,7 @@
                 else{
                     this.isQuery = false;
                 }
+//                Account.List()
             },
             // 设置列表数据
             setListData(result){
