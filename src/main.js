@@ -31,13 +31,7 @@ router.beforeEach((to, from, next) => {
 		if(to.name === 'Login') next({ name : 'Main'});
 		else{
 			// token验证
-			store.dispatch('CheckToken').then(res => {
-			  console.log(1111111111111)
-			  next()
-			}).catch(err => {
-			  console.log(333333333333333)
-			  next({ name : 'Login'})
-      })
+			store.dispatch('CheckToken').then(res => { next() }).catch(err => { next({ name : 'Login'}) })
 		}
 	}
 	// 没有token则全部重定向到登录页
