@@ -17,11 +17,11 @@
                     <Date-picker class="query-item" type="date" v-model="queryForm.eTime" placement="bottom-end" placeholder="请选择结束日期" @on-change="getEndDate"></Date-picker>
                     <div class="clearfix"></div>
                 </Form-item>
-                <Form-item class="query-item" prop="enabledState">
-                    <Select v-model="queryForm.enabledState" placeholder="用户状态">
-                        <Option value="">全部</Option>
+                <Form-item class="query-item">
+                    <Select v-model="queryForm.state" placeholder="用户状态">
+                        <Option value="-1">全部</Option>
                         <Option value="1">启用</Option>
-                        <Option value="-1">禁用</Option>
+                        <Option value="0">禁用</Option>
                     </Select>
                 </Form-item>
                 <Form-item class="fl">
@@ -57,9 +57,9 @@
                 show-elevator
                 show-sizer
                 show-total
-                :total="page.dataCount"
+                :total="page.totalSize"
                 :page-size="page.pageSize"
-                :current="page.pageNo"
+                :current="page.page"
                 :page-size-opts="page.pageSizeOpts"
                 @on-change="changePage"
                 @on-page-size-change="changePageSize"
@@ -115,7 +115,7 @@
                     // 结束时间
                     eTime: '',
                     // 状态
-                    enabledState: '',
+                    state: '-1',
                 },
                 // 验证规则
                 validate: {
@@ -142,13 +142,8 @@
                         align: 'center'
                     },
                     {
-                        title: '真实姓名',
-                        key: 'realname',
-                        align: 'center'
-                    },
-                    {
-                        title: '性别',
-                        key: 'gender',
+                        title: '用户名称',
+                        key: 'userName',
                         align: 'center'
                     },
                     {
@@ -164,6 +159,11 @@
                     {
                         title: '创建时间',
                         key: 'createTime',
+                        align: 'center',
+                    },
+                    {
+                        title: '用户类型',
+                        key: 'userType',
                         align: 'center',
                     },
                     {
@@ -191,33 +191,15 @@
                 ],
                 //表格信息
                 listData:[
-                    {
-                        id: 1,
-                        realname: 'xLong',
-                        gender: '女',
-                        mobile: '18376686974',
-                        email: 'by_xlong@yeah.net',
-                        createTime: '2018-2-28',
-                        enabledState: 1
-                    },
-                    {
-                        id: 2,
-                        realname: 'Lio.Huang',
-                        gender: '男',
-                        mobile: '17777075292',
-                        email: 'lio.huang@qq.com',
-                        createTime: '2018-2-28',
-                        enabledState: 1
-                    },
-                    {
-                        id: 2,
-                        realname: '肖健',
-                        gender: '女',
-                        mobile: '13737147607',
-                        email: 'xiaojian@zhujia.com',
-                        createTime: '2018-2-28',
-                        enabledState: 1
-                    }
+//                    {
+//                        id: 1,
+//                        realname: 'xLong',
+//                        gender: '女',
+//                        mobile: '18376686974',
+//                        email: 'by_xlong@yeah.net',
+//                        createTime: '2018-2-28',
+//                        enabledState: 1
+//                    },
                 ],
             }
         },
@@ -233,16 +215,24 @@
         methods: {
             // 获取表格列表
             getTableList(query){
-                console.log(GetLocalS('pAppUserId'))
-                // this.pageLoading = true;
-                // 设置是否查询状态
-                if(query){
-                    this.isQuery = true;
-                }
-                else{
-                    this.isQuery = false;
-                }
-//                Account.List()
+                 this.pageLoading = true
+                console.log(this.page.page)
+                console.log(this.page.pageSize)
+                console.log(this.queryForm)
+                Account.List(this.queryForm,this.page.page,this.page.pageSize).then(res=>{
+                    console.log(res)
+                  this.pageLoading = false
+                  if(res.code==200){
+                    // 设置是否查询状态
+                    if(query) this.isQuery = true
+                    else this.isQuery = false
+                    //分页设置
+                    this.page = res.paging
+                    this.listData = res.data
+                  }else this.$Message.warning(res.msg)
+                }).catch(err=>{
+                  console.log(err)
+                })
             },
             // 设置列表数据
             setListData(result){

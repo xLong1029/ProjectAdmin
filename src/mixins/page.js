@@ -12,7 +12,7 @@ export default {
       // 分页设置
       page: {
         // 总记录数
-        dataCount: 0,
+        totalSize: 0,
         // 是否有下一页
         hasNextPage: false,
         // 是否有上一页
@@ -20,7 +20,7 @@ export default {
         // 总页数
         pageCount: 0,
         // 当前页码
-        pageNo: 1,
+        page: 1,
         // 每页显示记录数
         pageSize: 10,
         // 每条条数切换的配置
@@ -31,13 +31,13 @@ export default {
   methods: {
     // 设置页码
     setPage(result){
-      this.page.dataCount = result.count;
+      this.page.totalSize = result.count;
       this.page.pageCount = result.pages;
     },
     // 切换页码
     changePage(pageNo) {
       // 修改当前页码
-      this.page.pageNo = pageNo;
+      this.page.page = pageNo;
       // 更新列表
       this.updateList();
     },

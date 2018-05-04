@@ -89,7 +89,7 @@
 //              console.log(res)
               if(res.code==200){
                 // token存cookie
-                SetCookie('pAppToken', res.data.token);
+//                SetCookie('pAppToken', res.data.token);
                 this.$store.commit('SET_USER_TOKEN', res.data.token);
                 this.$Message.success('登录成功!');
                 //存id

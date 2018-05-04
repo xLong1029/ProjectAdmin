@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import { GetCookie } from 'common/important.js'
 export default {
 	/*
 	 * [封装get和post请求函数]
@@ -14,23 +14,25 @@ export default {
 				params,
 				headers:{
 					'Cache-Control': 'no-cache',
-          			Pragma: 'no-cache'
+          			Pragma: 'no-cache',
+          token: GetCookie('pAppToken')
 				}
 			};
 		}
 		return axios.get(url, conf)
 		.then(res => { return Promise.resolve(res.data) })
-		.catch(err => { return Promise.reject(err) })	
+		.catch(err => { return Promise.reject(err) })
 	},
 	HttpPost:(url,data)=>{
 		let conf = {
 			headers:{
 				'Cache-Control': 'no-cache',
-				Pragma: 'no-cache'
+				Pragma: 'no-cache',
+        token:GetCookie('pAppToken')
 			}
 		};
 		return axios.post(url, data, conf)
 		.then(res => { return Promise.resolve(res.data) })
 		.catch(err => { return Promise.reject(err) })
-	}
+	},
 }
