@@ -22,7 +22,7 @@ export default {
         // 当前页码
         page: 1,
         // 每页显示记录数
-        pageSize: 10,
+        size: 10,
         // 每条条数切换的配置
         pageSizeOpts: [10, 20, 30, 40]
       },
@@ -35,16 +35,17 @@ export default {
       this.page.pageCount = result.pages;
     },
     // 切换页码
-    changePage(pageNo) {
+    changePage(page) {
       // 修改当前页码
-      this.page.page = pageNo;
+      this.page.page = page;
       // 更新列表
       this.updateList();
     },
     // 切换每页条数
-    changePageSize(pageSize){
+    changePageSize(size){
+      console.log(size)
       // 修改当前显示条数
-      this.page.pageSize = pageSize;
+      this.page.size = size;
       // 更新列表
       this.updateList();
     },

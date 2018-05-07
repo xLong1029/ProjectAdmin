@@ -21,6 +21,7 @@ export default {
         .catch(err => reject(err))
     })
   },
+  //禁用
   Disable:(infoList)=>{
     return new Promise((resolve,reject)=>{
       tools.HttpPost(`/api/AdminService/Information/Disable`,infoList)
@@ -28,6 +29,23 @@ export default {
         .catch(err => reject(err))
     })
   },
+  //获取文章列表
+  List:(query,page,size)=>{
+    return new Promise((resolve,reject)=>{
+      tools.HttpGet(`/api/AdminService/Information/List`,{
+        id:query.id,
+        keyWord:query.keyWord,
+        page:page,
+        publishDate:query.publishDate,
+        size:size,
+        state:query.state,
+        title:query.title,
+        webSite:query.webSite,
+      })
+        .then(res => resolve(res))
+        .catch(err => reject(err))
+    })
+  }
   // List:(info)=>{
   //   return new Promise((resolve,reject)=>{
   //     tools.HttpGet(`/api/AdminService/Information/Disable`,{

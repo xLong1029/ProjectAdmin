@@ -14,7 +14,7 @@ export default {
 		_commit('SET_USER_ID', info.id);
 	},
 	// 清空账户信息
-	clearAccount: (_commit) => {		
+	clearAccount: (_commit) => {
 		// 清除token
 		DelCookie('pAppToken');
 		_commit('SET_USER_TOKEN', '');

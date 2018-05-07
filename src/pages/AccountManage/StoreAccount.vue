@@ -2,18 +2,18 @@
     <div class="g-content">
         <!--  加载判断 -->
         <Loading v-if="pageLoading"></Loading>
-        <Form v-else ref="infoForm" :model="infoForm" :rules="validate" :label-width="120">
+        <Form v-else ref="infoForm" :model="infoForm" :rules="pageType == 'add'?validate:validateUpdate" :label-width="120">
             <!-- 个人信息 -->
             <h2 class="m-title">个人信息</h2>
             <div class="m-content">
                 <Row>
                     <Col span="12">
                         <Form-item v-if="pageType == 'edit'" label="创建时间：">
-                            <span>{{ infoForm.createdAt }}</span>
+                            <span>{{ infoForm.createTime }}</span>
                         </Form-item>
 
-                        <Form-item label="真实姓名：" prop="realname">
-                            <Input v-model="infoForm.realname" placeholder="请输入真实姓名"></Input>
+                        <Form-item label="用户名称：" prop="userName">
+                            <Input v-model="infoForm.userName" placeholder="请输入真实姓名"></Input>
                         </Form-item>
                         <!--<Form-item label="性别：" prop="gender">-->
                             <!--<Radio-group v-model="infoForm.gender">-->
@@ -27,7 +27,7 @@
                     </Col>
                     <Col span="12">
                         <Form-item v-if="pageType == 'edit'" label="用户编号：">
-                            <span>{{ infoForm.userId }}</span>
+                            <span>{{ infoForm.id }}</span>
                         </Form-item>
                         <!--<Form-item label="头像：" style="margin-bottom:16px;">-->
                             <!--&lt;!&ndash; 组件-图片上传-单图片显示 &ndash;&gt;-->
@@ -39,7 +39,7 @@
                         <Form-item label="类型：" prop="type">
                             <RadioGroup v-model="infoForm.type">
                                 <Radio label="1">普通用户</Radio>
-                                <Radio label="2">管理员</Radio>
+                                <Radio label="1024">管理员</Radio>
                             </RadioGroup>
                         </Form-item>
                     </Col>
@@ -64,7 +64,7 @@
             <!-- 操作按钮 -->
             <div class="m-operation">
                 <Button v-if="pageType == 'edit'" class="fr" type="primary" @click="submit('infoForm', 'edit')">确认修改</Button>
-                <Button v-else class="fr" type="primary" @click="submit('infoForm', 'edit')">确认新增</Button>
+                <Button v-else class="fr" type="primary" @click="submit('infoForm', 'add')">确认新增</Button>
                 <Button class="fr" type="ghost" @click="$router.go(-1)">返回</Button>
                 <div class="clearfix"></div>
             </div>
@@ -83,7 +83,7 @@
     // 验证方法
     import Validate from 'common/validate.js'
     // Api方法
-    // import Api from 'api/api.js'
+     import Account from 'api/Account.js'
     // 城市联动选择
     import CitySelect from 'mixins/city_select.js'
     // 邮箱自动填充
@@ -109,11 +109,11 @@
                 // 表单信息
                 infoForm: {
                     // 用户编号
-                    userId: '',
+//                    userId: '',
                     // 创建时间
-                    createdAt: '',
+//                    createdAt: '',
                     // 真实姓名
-                    realname: '',
+                    userName: '',
                     // 头像
 //                    face: require('@/assets/images/default-face.jpg'),
                     // 性别
@@ -130,7 +130,7 @@
                 },
                 // 验证规则
                 validate: {
-                    realname: [{ required: true, message: '真实姓名不能为空', trigger: 'blur'}],
+                    userName: [{ required: true, message: '真实姓名不能为空', trigger: 'blur'}],
                     mobile: [
                         { required: true, message: '手机号码不能为空', trigger: 'blur'},
                         { pattern: Common.regMobile, message: '手机号码格式不正确', trigger: 'blur' }
@@ -139,7 +139,7 @@
                         { required: true, message: '邮箱不能为空', trigger: 'blur'},
                         { pattern: Common.regEmail, message: '邮箱格式不正确', trigger: 'change' }
                     ],
-                    password: [{ pattern: Common.regPassword, message: '密码格式为8-16位字母和数字组合', trigger: 'blur' }],
+                    password: [{ required:true ,pattern: Common.regPassword, message: '密码格式为8-16位字母和数字组合', trigger: 'blur' }],
                     passwdCheck: [{
                         validator: (rule, value, callback) => {
                             Validate.ValidPwdCheck(this.infoForm.password, value, callback, false);
@@ -150,12 +150,23 @@
                         { required: true, message: '类型不能为空', trigger: 'blur'}
                     ]
                 },
+                //验证规则-修改
+                validateUpdate:{
+                    type:[
+                      { required: true, message: '类型不能为空', trigger: 'blur'}
+                    ],
+                    passwdCheck: [{
+                      validator: (rule, value, callback) => {
+                        Validate.ValidPwdCheck(this.infoForm.password, value, callback, false);
+                      },
+                      trigger: 'blur'
+                    }],
+                }
             }
         },
         created() {
             // 初始化图片和输入框
-            Common.InitPicStore(this);
-
+//            Common.InitPicStore(this);
             // 判断是否是编辑页
             if(this.$route.query.id){
                 // 获取用户编号
@@ -184,16 +195,51 @@
                 this.$refs[form].validate((valid) => {
                     if (valid) {
                         // 页面加载
-                        // this.pageLoading = true;
-
-                        this.infoForm.face = this.getImageUrl;
-
+                         this.pageLoading = true
+//                        this.infoForm.face = this.getImageUrl;
                         if(this.pageType == 'add'){
                             // 新增用户
+//                            console.log(this.infoForm)
+                            this.pageLoading = false
+                            Account.Add(this.infoForm).then(res=>{
+                              if(res.code==200){
+                                this.$Message.success({
+                                  content: '新增用户成功!',
+                                  onClose: () => {
+                                    // 跳转到列表页
+                                    this.$router.push({ name: 'AccountManage' })
+                                  }
+                                });
+                              }else this.$Message.warning(res.msg)
+                            }).catch(err=>{
+                              console.log(err)
+                              this.$Message.error('网络出错，操作失败！')
+                            })
                         }
                         else{
                             // 修改账户信息
-
+                          //邮箱和手机必填一个
+                          this.pageLoading = false
+                          if(this.infoForm.email==''&&this.infoForm.mobile==''){
+                            this.$Message.error('邮箱和手机必填一个')
+                          }else{
+                            if(!this.infoForm.password) this.infoForm.password = ''
+                            Account.Edit(this.infoForm,this.$route.query.id).then(res=>{
+//                                console.log(res)
+                              if(res.code==200){
+                                this.$Message.success({
+                                  content: '修改用户成功!',
+                                  onClose: () => {
+                                    // 跳转到列表页
+                                    this.$router.push({ name: 'AccountManage' })
+                                  }
+                                })
+                              }else this.$Message.warning(res.msg)
+                            }).catch(err=>{
+                              console.log(err)
+                              this.$Message.error('网络出错，操作失败！')
+                            })
+                          }
                         }
                     }
                     else this.$Message.error('提交失败！填写有误');
@@ -201,6 +247,19 @@
             },
             // 获取账户详情
             getDetail(){
+              this.pageLoading = true
+//              console.log(this.$route.query.id)
+              Account.GetInfo(this.$route.query.id).then(res=>{
+//                  console.log(res)
+                this.pageLoading = false
+                if(res.code==200){
+                  this.infoForm = res.data
+                  console.log(this.infoForm.type)
+                  console.log(typeof (this.infoForm.type))
+                }else this.$Message.error(res.msg)
+              }).catch(err=>{
+                this.$Message.error('网络出错，请重新刷新')
+              })
             }
         }
     }

@@ -75,5 +75,20 @@ export default {
         .then(res => resolve(res))
         .catch(err => reject(err))
     })
+  },
+  //修改用户信息
+  Edit:(userInfo,id)=>{
+    return new Promise((resolve,reject)=>{
+      tools.HttpPost(`/api/AdminService/User/Edit`,{
+        email:userInfo.email,
+        mobile:userInfo.mobile,
+        password:userInfo.password,
+        type:userInfo.type,
+        userName:userInfo.userName,
+        id:id,
+      })
+        .then(res => resolve(res))
+        .catch(err => reject(err))
+    })
   }
 }

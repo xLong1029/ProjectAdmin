@@ -58,7 +58,7 @@
                 show-sizer
                 show-total
                 :total="page.totalSize"
-                :page-size="page.pageSize"
+                :page-size="page.size"
                 :current="page.page"
                 :page-size-opts="page.pageSizeOpts"
                 @on-change="changePage"
@@ -217,9 +217,9 @@
             getTableList(query){
                  this.pageLoading = true
                 console.log(this.page.page)
-                console.log(this.page.pageSize)
+                console.log(this.page.size)
                 console.log(this.queryForm)
-                Account.List(this.queryForm,this.page.page,this.page.pageSize).then(res=>{
+                Account.List(this.queryForm,this.page.page,this.page.size).then(res=>{
                     console.log(res)
                   this.pageLoading = false
                   if(res.code==200){

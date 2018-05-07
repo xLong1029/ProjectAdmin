@@ -15,9 +15,9 @@ const login = {
 	actions: {
         // 验证token
         CheckToken ({ commit , state }) {
-            if(Common.GetCookie('com_admin_token')){
+            if(Common.GetCookie('pAppToken')){
                 // 获取用户信息
-                Login.TokenCheck(Common.GetCookie('com_admin_token'))
+                Login.TokenCheck(Common.GetCookie('pAppToken'))
                 .then(res => {
                     const result = res.data;
                     // 登录认证成功
