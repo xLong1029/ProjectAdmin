@@ -5,11 +5,11 @@ import tools from '@/tools'
 export default {
   //api方法
   //修改文章内容
-  Edit:(info)=>{
+  Edit:(info,id)=>{
     return new Promise((resolve,reject)=>{
       tools.HttpPost(`/api/AdminService/Information/Edit`,{
         htmlContext:info.htmlContext,
-        id:info.id,
+        id:id,
         keyWord:info.keyWord,
         publishDate:info.publishDate,
         title:info.title,

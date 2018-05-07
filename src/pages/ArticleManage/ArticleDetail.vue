@@ -17,7 +17,7 @@
                     </Col>
                     <Col span="12">
                         <Form-item label="文章关键字：" prop="keyWord">
-                            <Input v-model="infoForm.title" placeholder="请输入关键字，多个关键字请用','隔开"></Input>
+                            <Input v-model="infoForm.keyWord" placeholder="请输入关键字，多个关键字请用','隔开"></Input>
                         </Form-item>
                         <Form-item label="文章地址源：">
                             <span>{{infoForm.url}}</span>
@@ -54,6 +54,8 @@
     import Validate from 'common/validate.js'
     // 表格查询
     import TableQuery from 'mixins/table_query.js'
+    // api
+    import Article from 'api/article.js'
     //导入富文本组件
     import Tinymce from "@/components/Common/Tinymce.vue"
     export default {
@@ -91,6 +93,7 @@
                 { name: '文章列表', path: '/ArticleManage/List' },
                 { name: '文章详情', path: '' }
             ]);
+            this.getDetail()
         },
         methods:{
             // 提交表单
@@ -99,11 +102,37 @@
                     if (valid) {
                       // 页面加载
                       // this.pageLoading = true;
-
+                      Article.Edit(this.infoForm,this.$route.query.id).then(res=>{
+                        if(res.code==200){
+                          this.$Message.success({
+                            content: '修改文章成功!',
+                            onClose: () => {
+                              // 跳转到列表页
+                              this.$router.push({ name: 'ArticleManage' })
+                            }
+                          })
+                        }else this.$Message.warning(res.msg)
+                      }).catch(err=>{
+                        console.log(err)
+                        this.$Message.error('网络出错，操作失败！')
+                      })
                     }
                     else this.$Message.error('提交失败！填写有误');
                 })
             },
+            getDetail(){
+                this.pageLoading = true
+//                console.log(this.$route.query.id)
+                Article.GetInfo(this.$route.query.id).then(res=>{
+                    this.pageLoading = false
+//                    console.log(res)
+                    if(res.code==200){
+                        this.infoForm = res.data
+                    }else this.$Message.error(res.msg)
+                }).catch(err=>{
+                  this.$Message.error('网络出错，请重新刷新')
+                })
+            }
         }
     }
 </script>

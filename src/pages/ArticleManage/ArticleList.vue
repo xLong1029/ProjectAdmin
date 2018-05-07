@@ -216,12 +216,13 @@
         methods:{
             //获取表格列表
             getTableList(query){
-                // this.pageLoading = true;
-                console.log(this.page.page)
-                console.log(this.page.size)
-                console.log(this.queryForm)
+                 this.pageLoading = true;
+//                console.log(this.page.page)
+//                console.log(this.page.size)
+//                console.log(this.queryForm)
                 Article.List(this.queryForm,this.page.page,this.page.size).then(res=>{
-                    console.log(res)
+//                    console.log(res)
+                  this.pageLoading = false
                   if(res.code==200){
                     this.listData = res.data
                     //分页设置

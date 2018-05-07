@@ -83,7 +83,7 @@
     // 验证方法
     import Validate from 'common/validate.js'
     // Api方法
-     import Account from 'api/Account.js'
+     import Account from 'api/account.js'
     // 城市联动选择
     import CitySelect from 'mixins/city_select.js'
     // 邮箱自动填充
@@ -259,8 +259,8 @@
                 this.pageLoading = false
                 if(res.code==200){
                   this.infoForm = res.data
-                  console.log(this.infoForm.type)
-                  console.log(typeof (this.infoForm.type))
+//                  console.log(this.infoForm.type)
+//                  console.log(typeof (this.infoForm.type))
                 }else this.$Message.error(res.msg)
               }).catch(err=>{
                 this.$Message.error('网络出错，请重新刷新')
