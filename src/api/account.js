@@ -6,9 +6,12 @@ import tools from '@/tools'
 export default {
   // Api方法
   //修改密码
-  pwd:(userId) => {
+  ChangePassword:(info) => {
     return new Promise((resolve,reject)=>{
-      tools.HttpPost(`/api/AdminService/User/GetInfo?userId=${userId}`)
+      tools.HttpPost(`/api/ProjectDeclare/Personal/ChangePassword`,{
+        newPassword:info.newPassword,
+        oldPassword:info.oldPassword,
+      })
         .then(res => resolve(res))
         .catch(err => reject(err))
     })

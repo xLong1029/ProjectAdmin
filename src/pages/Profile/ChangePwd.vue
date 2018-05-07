@@ -24,7 +24,8 @@
 	import Validate from 'common/validate.js'
     // Vuex
     import { mapGetters } from 'vuex'
-
+    // Api方法
+    import Account from '@/api/Account.js'
 	export default {
         computed: {
             ...mapGetters([ 'token' ])
@@ -79,21 +80,21 @@
                 this.$refs[form].validate((valid) => {
                     if (valid) {
                         // 修改密码 Api
-                        // Api.ChangePwd(this.editForm, { token : this.token})
-                        // .then(res => {
-                        //     if(res.code == 200){                                                            
-                        //         // 登出 action方法
-                        //         this.$store.dispatch('LogOut')
-                        //         .then(res => {
-                        //             this.$Message.success('密码修改成功!请重新登录');
-                        //             this.$router.push({ name: 'Login' });
-                        //         })
-                        //         .catch(err => console.log(err))
-                        //     }
-                        //     else if(res.code == 404) this.$Message.error(res.msg); 
-                        //     else this.$Message.error('密码修改失败！');
-                        // })
-                        // .catch(err => console.log(err));
+                      Account.ChangePassword(this.editForm)
+                         .then(res => {
+                             if(res.code == 200){
+                                 // 登出 action方法
+                                 this.$store.dispatch('LogOut')
+                                 .then(res => {
+                                     this.$Message.success('密码修改成功!请重新登录');
+                                     this.$router.push({ name: 'Login' });
+                                 })
+                                 .catch(err => console.log(err))
+                             }
+                             else if(res.code == 404) this.$Message.error('密码修改失败！');
+                             else this.$Message.error(res.msg);
+                         })
+                         .catch(err => console.log(err));
                     }
                     else this.$Message.error('提交失败！填写有误');
                 })

@@ -20,7 +20,7 @@
                             <Input v-model="infoForm.keyWord" placeholder="请输入关键字，多个关键字请用','隔开"></Input>
                         </Form-item>
                         <Form-item label="文章地址源：">
-                            <span>{{infoForm.url}}</span>
+                            <span class="text-break">{{infoForm.url}}</span>
                         </Form-item>
                         <Form-item prop="publishDate" class="fl" label="发布日期：">
                             <Date-picker class="query-item" type="date" v-model="infoForm.publishDate" placement="bottom-end" placeholder="请选择发布日期" @on-change="getDate"></Date-picker>
@@ -145,5 +145,11 @@
           min-width: 80px;
           margin-left: 10px;
         }
+    }
+    .text-break{
+      display: inline-block;
+      word-wrap: break-word;
+      white-space: normal;
+      width: 100%;
     }
 </style>
