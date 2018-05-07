@@ -31,7 +31,7 @@
                 <Row>
                     <Col>
                         <Form-item label="内容：" prop="content">
-                            <tinymce v-model="infoForm.htmlContext" height="500"></tinymce>
+                            <tinymce v-model="infoForm.htmlContext" height="500" :toolbar="'code | preview fullscreen | insertfile undo redo | styleselect | fontsizeselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link'"></tinymce>
                         </Form-item>
                     </Col>
                 </Row>
