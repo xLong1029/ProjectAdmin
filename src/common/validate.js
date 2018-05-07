@@ -110,18 +110,18 @@ export default {
         if(required && endDate == '') return callback(new Error('结束日期不能为空'));
         else{
             if(startDate){
-                let nowDate = new Date();
-                const compare = Common.CompareDate(startDate, nowDate);
-
-                if (!compare) return callback(new Error('开始日期不能大于当前日期'));
-                else{
+                // let nowDate = new Date();
+                // const compare = Common.CompareDate(startDate, nowDate);
+                //
+                // if (!compare) return callback(new Error('开始日期不能大于当前日期'));
+                // else{
                     if(endDate){
                         const compare = Common.CompareDate(startDate, endDate);
                         if (!compare) return callback(new Error('结束日期不能小于开始日期'));
                         else return callback();
                     }
                     else return callback();
-                }
+                // }
             }
             else{
                 if(endDate) return callback(new Error('请选择开始日期'));

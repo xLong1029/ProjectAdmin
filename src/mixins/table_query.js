@@ -56,6 +56,7 @@ export default {
 			this.$refs[form].resetFields();
 			if(this.queryForm.sTime) this.queryForm.sTime = '';
 			if(this.queryForm.eTime) this.queryForm.eTime = '';
+      this.queryForm.state = ''
 			this.getTableList();
 		}
 	}

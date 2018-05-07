@@ -19,7 +19,7 @@
                 </Form-item>
                 <Form-item class="query-item">
                     <Select v-model="queryForm.state" placeholder="用户状态">
-                        <Option value="-1">全部</Option>
+                        <Option value="">全部</Option>
                         <Option value="1">启用</Option>
                         <Option value="0">禁用</Option>
                     </Select>
@@ -125,7 +125,7 @@
                     // 结束时间
                     eTime: '',
                     // 状态
-                    state: '-1',
+                    state: '',
                 },
                 // 验证规则
                 validate: {
@@ -226,11 +226,11 @@
             // 获取表格列表
             getTableList(query){
                  this.pageLoading = true
-                console.log(this.page.page)
-                console.log(this.page.size)
-                console.log(this.queryForm)
+//                console.log(this.page.page)
+//                console.log(this.page.size)
+//                console.log(this.queryForm)
                 Account.List(this.queryForm,this.page.page,this.page.size).then(res=>{
-                    console.log(res)
+//                    console.log(res)
                   this.pageLoading = false
                   if(res.code==200){
                     // 设置是否查询状态
