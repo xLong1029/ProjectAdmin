@@ -14,17 +14,17 @@ export default {
     })
   },
   //删除用户
-  Delete:(userList)=>{
+  Delete:(type,userList)=>{
     return new Promise((resolve,reject)=>{
-      tools.HttpPost(`/api/AdminService/User/Delete`,userList)
+      tools.HttpPost(`/api/AdminService/${type}/Delete`,userList)
         .then(res => resolve(res))
         .catch(err => reject(err))
     })
   },
   //启用账户
-  Enabled:(userList)=>{
+  Enabled:(type,userList)=>{
     return new Promise((resolve,reject)=>{
-      tools.HttpPost(`/api/AdminService/User/Enabled`,userList)
+      tools.HttpPost(`/api/AdminService/${type}/Enabled`,userList)
         .then(res => resolve(res))
         .catch(err => reject(err))
     })
@@ -44,9 +44,9 @@ export default {
     })
   },
   //禁用账户
-  Disable:(userList)=>{
+  Disable:(type,userList)=>{
     return new Promise((resolve,reject)=>{
-      tools.HttpPost(`/api/AdminService/User/Disable`,userList)
+      tools.HttpPost(`/api/AdminService/${type}/Disable`,userList)
         .then(res => resolve(res))
         .catch(err => reject(err))
     })

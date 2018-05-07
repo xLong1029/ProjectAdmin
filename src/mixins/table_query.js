@@ -32,8 +32,7 @@ export default {
 		// form:表单对象， getValid:是否需要验证表单
 		query(form, getValid) {
 			// 修改当前页码
-			this.page.pageNo = 1;
-
+			this.page.page = 1;
 			if(getValid == 'valid'){
 				// 表单验证
 				this.$refs[form].validate((valid)=>{

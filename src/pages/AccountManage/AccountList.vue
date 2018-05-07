@@ -97,11 +97,15 @@
         computed: {
           //禁用操作接口
           apiDisable(){
-            return()=>Account.Disable(this.selectList)
+            return()=>Account.Disable('User',this.selectList)
           },
           // 启用操作接口
           apiEnable(){
-            return () => Account.Enabled(this.selectList);
+            return () => Account.Enabled('User',this.selectList);
+          },
+          // 删除操作接口
+          apiDelete(){
+            return () => Account.Delete('User',this.selectList);
           },
         },
         data() {

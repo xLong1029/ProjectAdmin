@@ -9,21 +9,19 @@
                 <Form-item class="query-item" prop="title">
                     <Input v-model="queryForm.title" placeholder="文章标题"></Input>
                 </Form-item>
-                <Form-item class="query-item" prop="keyWord">
-                    <Input v-model="queryForm.keyWord" placeholder="文章关键字"></Input>
-                </Form-item>
                 <Form-item class="query-item" prop="webSite">
                     <Input v-model="queryForm.webSite" placeholder="文章来源网站"></Input>
                 </Form-item>
-                <Form-item prop="publishDate" class="fl">
-                    <Date-picker class="query-item" type="date" v-model="queryForm.publishDate" placement="bottom-end" placeholder="请选择发布日期" @on-change="getStartDate"></Date-picker>
+                <Form-item class="fl" prop="date">
+                    <Date-picker class="query-item" type="date" v-model="queryForm.sTime" placement="bottom-end" placeholder="请选择开始日期" @on-change="getStartDate"></Date-picker>
+                    <Date-picker class="query-item" type="date" v-model="queryForm.eTime" placement="bottom-end" placeholder="请选择结束日期" @on-change="getEndDate"></Date-picker>
                     <div class="clearfix"></div>
                 </Form-item>
                 <Form-item class="query-item" prop="enabled">
-                    <Select v-model="queryForm.enabled" placeholder="是否启用">
+                    <Select v-model="queryForm.state" placeholder="是否启用">
                         <Option value="">全部</Option>
                         <Option value="1">启用</Option>
-                        <Option value="-1">禁用</Option>
+                        <Option value="0">禁用</Option>
                     </Select>
                 </Form-item>
                 <Form-item class="fl">
@@ -58,9 +56,9 @@
                 show-elevator
                 show-sizer
                 show-total
-                :total="page.dataCount"
-                :page-size="page.pageSize"
-                :current="page.pageNo"
+                :total="page.totalSize"
+                :page-size="page.size"
+                :current="page.page"
                 :page-size-opts="page.pageSizeOpts"
                 @on-change="changePage"
                 @on-page-size-change="changePageSize"
@@ -78,7 +76,7 @@
     // 通用JS
     import Validate from 'common/validate.js'
     // Api方法
-    // import Api from '@/api/api.js'
+     import Article from '@/api/Article.js'
     // 表格设置
     import tableSetting from 'common/table_setting.js'
     // 表格查询
@@ -90,6 +88,20 @@
     export default{
         components:{ Loading },
         mixins: [ TableQuery, TableOperate, Page ],
+        computed: {
+            //禁用操作接口
+            apiDisable(){
+              return()=>Article.Disable('Information',this.selectList)
+            },
+            // 启用操作接口
+            apiEnable(){
+              return () => Article.Enabled('Information',this.selectList);
+            },
+            // 删除操作接口
+            apiDelete(){
+              return () => Article.Delete('Information',this.selectList);
+            },
+        },
         data(){
             return{
                 // 加载页面
@@ -100,22 +112,22 @@
                     id:'',
                     //文章标题
                     title:'',
-                    //文章关键字
-                    keyWord:'',
-                    //文章发布日期
-                    publishDate:'',
+                    // 起始时间
+                    sTime: '',
+                    // 结束时间
+                    eTime: '',
                     //状态
-                    enabled:'',
+                    state:'',
                     //文章来源网站
                     webSite:''
                 },
                 //验证规则
                 validate:{
-                    webSite:[{pattern: Common.regWebsite , message:'网站格式不正确',trigger: 'blur'}],
-                    publishDate:[{
-                        validator: (rule, value, callback) => {
-                            Validate.ValidBirthDate(this.queryForm.publishDate, callback, false,'date');
-                        },
+//                    webSite:[{pattern: Common.regWebsite , message:'网站格式不正确',trigger: 'blur'}],
+                    date:[{
+                      validator: (rule, value, callback) => {
+                        Validate.ValidRangeDate(this.queryForm.sTime, this.queryForm.eTime, callback, false);
+                      },
                         trigger: 'change',
                     }]
                 },
@@ -152,7 +164,7 @@
                     {
                         title:'网站来源',
                         key:'webSite',
-                        width:250,
+                        width:200,
                         align:'center'
                     },
                     {
@@ -182,14 +194,14 @@
                 ],
                 //表格信息
                 listData:[
-                    {
-                        id:'1',
-                        title:'酸梅汤酸梅汤',
-                        keyWord:'酸梅汤',
-                        publishDate:'酸',
-                        enabled:'1',
-                        webSite:'www.smt.com'
-                    }
+//                    {
+//                        id:'1',
+//                        title:'酸梅汤酸梅汤',
+//                        keyWord:'酸梅汤',
+//                        publishDate:'酸',
+//                        enabled:'1',
+//                        webSite:'www.smt.com'
+//                    }
                 ]
             }
         },
@@ -199,18 +211,32 @@
                 { name: '首页', path: '/Home' },
                 { name: '文章列表', path: '/ArticleManage/ArticleList' }
             ]);
+            this.getTableList()
         },
         methods:{
             //获取表格列表
             getTableList(query){
                 // this.pageLoading = true;
-                // 设置是否查询状态
-                if(query){
-                  this.isQuery = true;
-                }
-                else{
-                  this.isQuery = false;
-                }
+                console.log(this.page.page)
+                console.log(this.page.size)
+                console.log(this.queryForm)
+                Article.List(this.queryForm,this.page.page,this.page.size).then(res=>{
+                    console.log(res)
+                  if(res.code==200){
+                    this.listData = res.data
+                    //分页设置
+                    this.page = res.paging
+                    // 设置是否查询状态
+                    if(query){
+                      this.isQuery = true;
+                    }
+                    else{
+                      this.isQuery = false;
+                    }
+                  }else this.$Message.warning(res.msg)
+                }).catch(err=>{
+                  console.log(err)
+                })
             },
             // 设置列表数据
             setListData(result){

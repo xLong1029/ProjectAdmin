@@ -132,11 +132,11 @@
                 validate: {
                     userName: [{ required: true, message: '真实姓名不能为空', trigger: 'blur'}],
                     mobile: [
-                        { required: true, message: '手机号码不能为空', trigger: 'blur'},
+//                        { required: true, message: '手机号码不能为空', trigger: 'blur'},
                         { pattern: Common.regMobile, message: '手机号码格式不正确', trigger: 'blur' }
                     ],
                     email: [
-                        { required: true, message: '邮箱不能为空', trigger: 'blur'},
+//                        { required: true, message: '邮箱不能为空', trigger: 'blur'},
                         { pattern: Common.regEmail, message: '邮箱格式不正确', trigger: 'change' }
                     ],
                     password: [{ required:true ,pattern: Common.regPassword, message: '密码格式为8-16位字母和数字组合', trigger: 'blur' }],
@@ -145,15 +145,15 @@
                             Validate.ValidPwdCheck(this.infoForm.password, value, callback, false);
                         },
                         trigger: 'blur'
-                    }],
-                    type:[
-                        { required: true, message: '类型不能为空', trigger: 'blur'}
-                    ]
+                    }]
                 },
                 //验证规则-修改
                 validateUpdate:{
-                    type:[
-                      { required: true, message: '类型不能为空', trigger: 'blur'}
+                    mobile: [
+                      { pattern: Common.regMobile, message: '手机号码格式不正确', trigger: 'blur' }
+                    ],
+                    email: [
+                      { pattern: Common.regEmail, message: '邮箱格式不正确', trigger: 'change' }
                     ],
                     passwdCheck: [{
                       validator: (rule, value, callback) => {
@@ -192,6 +192,7 @@
         methods: {
             // 提交表单
             submit(form, type) {
+//                console.log(this.infoForm)
                 this.$refs[form].validate((valid) => {
                     if (valid) {
                         // 页面加载
@@ -201,20 +202,24 @@
                             // 新增用户
 //                            console.log(this.infoForm)
                             this.pageLoading = false
-                            Account.Add(this.infoForm).then(res=>{
-                              if(res.code==200){
+                          if(this.infoForm.email==''&&this.infoForm.mobile==''){
+                            this.$Message.error('邮箱和手机必填一个')
+                          }else {
+                            Account.Add(this.infoForm).then(res => {
+                              if (res.code == 200) {
                                 this.$Message.success({
                                   content: '新增用户成功!',
                                   onClose: () => {
                                     // 跳转到列表页
-                                    this.$router.push({ name: 'AccountManage' })
+                                    this.$router.push({name: 'AccountManage'})
                                   }
                                 });
-                              }else this.$Message.warning(res.msg)
-                            }).catch(err=>{
+                              } else this.$Message.warning(res.msg)
+                            }).catch(err => {
                               console.log(err)
                               this.$Message.error('网络出错，操作失败！')
                             })
+                          }
                         }
                         else{
                             // 修改账户信息
