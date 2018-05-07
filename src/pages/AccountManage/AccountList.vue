@@ -94,6 +94,16 @@
     export default {
         components: { Loading },
         mixins: [ EmailComplete, TableQuery, TableOperate, Page ],
+        computed: {
+          //禁用操作接口
+          apiDisable(){
+            return()=>Account.Disable(this.selectList)
+          },
+          // 启用操作接口
+          apiEnable(){
+            return () => Account.Enabled(this.selectList);
+          },
+        },
         data() {
             return {
                 // 加载页面

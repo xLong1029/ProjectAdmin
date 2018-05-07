@@ -8,7 +8,7 @@ export default {
 	data() {
 		return {
 			// 全选选项列表
-            selectList: [],
+      selectList: [],
 		}
 	},
 	methods: {
@@ -71,7 +71,7 @@ export default {
             //     onOk: () => {
             //         // 延迟
             //         setTimeout(() => this.pageLoading = true, 500);
-                    
+
             //         this.apiDelete().then(res => {
             //             this.pageLoading = false;
             //             if(res.code == 200){
@@ -93,40 +93,40 @@ export default {
         },
         // 启用和禁用
         enableOrDisable(type){
-            this.$Message.warning('功能待开发!');
+            // this.$Message.warning('功能待开发!');
             // 延迟
             // setTimeout(() => this.pageLoading = true, 500);
 
             // 如果需要操作的状态为启用
             if(type === 1){
                 // 启用用户
-                // this.apiEnable()
-                // .then(res => {
-                //     this.pageLoading = false;
-                //     if(res.code == 200){
-                //         this.$Message.success('启用成功!');
-                //         // 更新列表
-                //         this.updateList();
-                //         // 清空选项列表
-                //         this.clearSelect();
-                //     }
-                //     else this.$Message.warning(res.msg);
-                // }).catch(err => console.log(err))
+                this.apiEnable()
+                .then(res => {
+                    this.pageLoading = false;
+                    if(res.code == 200){
+                        this.$Message.success('启用成功!');
+                        // 更新列表
+                        this.updateList();
+                        // 清空选项列表
+                        this.clearSelect();
+                    }
+                    else this.$Message.warning(res.msg);
+                }).catch(err => console.log(err))
             }
             // 如果需要操作的状态为禁用
-            else if(type === -1){                                
+            else if(type === -1){
                 // 禁用用户
-                // this.apiDisable().then(res => {
-                //     this.pageLoading = false;
-                //     if(res.code == 200){
-                //         this.$Message.success('禁用成功!');
-                //         // 更新列表
-                //         this.updateList();
-                //         // 清空选项列表
-                //         this.clearSelect();
-                //     }
-                //     else this.$Message.warning(res.msg);
-                // }).catch(err => console.log(err))
+                this.apiDisable().then(res => {
+                    this.pageLoading = false;
+                    if(res.code == 200){
+                        this.$Message.success('禁用成功!');
+                        // 更新列表
+                        this.updateList();
+                        // 清空选项列表
+                        this.clearSelect();
+                    }
+                    else this.$Message.warning(res.msg);
+                }).catch(err => console.log(err))
             }
         },
 	}

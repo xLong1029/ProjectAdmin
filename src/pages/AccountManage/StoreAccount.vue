@@ -38,8 +38,8 @@
                         </Form-item>
                         <Form-item label="类型：" prop="type">
                             <RadioGroup v-model="infoForm.type">
-                                <Radio label="1">普通用户</Radio>
-                                <Radio label="1024">管理员</Radio>
+                                <Radio :label="1">普通用户</Radio>
+                                <Radio :label="1024">管理员</Radio>
                             </RadioGroup>
                         </Form-item>
                     </Col>
@@ -126,7 +126,7 @@
                     password: '',
                     // 确认密码
                     passwdCheck: '',
-                    type:'1'
+                    type:1
                 },
                 // 验证规则
                 validate: {
