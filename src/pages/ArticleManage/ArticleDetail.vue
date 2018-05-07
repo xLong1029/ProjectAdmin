@@ -84,7 +84,7 @@
                     //文章内容
                     htmlContext:'酸梅汤好酸啊啊啊啊啊'
                 },
-                validate:{}
+                validate:{},
             }
         },
         created(){
@@ -98,11 +98,18 @@
         methods:{
             // 提交表单
             submit(form, type) {
+              if(typeof (this.infoForm.publishDate)=='object'){
+                var d = this.infoForm.publishDate
+                var month = (d.getMonth() + 1) > 10? (d.getMonth() + 1): '0'+(d.getMonth() + 1)
+                var date = d.getDate() > 10? d.getDate: '0'+d.getDate()
+                this.infoForm.publishDate=d.getFullYear() + '-' + month + '-' + date
+              }
                 this.$refs[form].validate((valid) => {
                     if (valid) {
                       // 页面加载
-                      // this.pageLoading = true;
+                       this.pageLoading = true;
                       Article.Edit(this.infoForm,this.$route.query.id).then(res=>{
+                        this.pageLoading = false
                         if(res.code==200){
                           this.$Message.success({
                             content: '修改文章成功!',

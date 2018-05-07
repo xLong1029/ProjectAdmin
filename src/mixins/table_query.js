@@ -17,6 +17,7 @@ export default {
     //获取日期
     getDate(date){
       this.infoForm.publishDate= date
+      console.log(date)
     },
 		// 获取查询开始日期
 		getStartDate(date) {
