@@ -121,7 +121,8 @@
         skin_url: 'https://cdn.bootcss.com/tinymce/4.5.8/skins/lightgray/',
         menubar: this.menubar===undefined  ? true : this.menubar,
         plugins: [
-          'advlist autolink lists link image charmap print preview anchor',
+//          'advlist autolink lists link image charmap print preview anchor',
+          'advlist autolink lists link charmap print preview anchor',
           'searchreplace visualblocks code fullscreen',
           'insertdatetime table contextmenu paste code textcolor'
         ],
