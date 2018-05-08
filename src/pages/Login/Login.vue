@@ -3,12 +3,12 @@
        <Form ref="loginForm" :model="loginForm" :rules="validate" class="login-form">
        		<h3 class="form-title"><img :src="logo"/></h3>
 	        <Form-item prop="username">
-	            <Input v-model="loginForm.username" placeholder="请输入手机号码">
+	            <Input v-model="loginForm.username" placeholder="请输入手机号码或者邮箱" @on-enter="submit('loginForm')">
 	            	<Icon type="ios-person-outline" slot="prepend"></Icon>
 	            </Input>
 	        </Form-item>
 	        <Form-item prop="password">
-	            <Input type="password" v-model="loginForm.password" placeholder="请输入密码">
+	            <Input type="password" v-model="loginForm.password" placeholder="请输入密码" @on-enter="submit('loginForm')">
 	            	<Icon type="ios-locked-outline" slot="prepend"></Icon>
 	            </Input>
 	        </Form-item>
@@ -22,7 +22,7 @@
 	        <!-- <Form-item>
 	            <Button type="primary" long @click="">注册</Button>
 	        </Form-item> -->
-	        <div style="text-align:center">测试使用登录账号:17777075292密码:mimashi123</div>
+	        <!--<div style="text-align:center">测试使用登录账号:17777075292密码:mimashi123</div>-->
 	    </Form>
 	</div>
 </template>
@@ -92,8 +92,6 @@
                 SetCookie('pAppToken', res.data.token);
                 this.$store.commit('SET_USER_TOKEN', res.data.token);
                 this.$Message.success('登录成功!');
-                //存id
-//                SetLocalS('pAppUserId',res.data.id)
                 // 判断是否记住密码
                 if (this.remeberPwd) {
                   // 本地存储用户名和密码
@@ -103,8 +101,8 @@
                 this.$router.push({ name: 'Main' });
                 return true;
               }
-              else{
-                this.$Message.error(res.data.msg);
+              else if(res.code==0){
+                this.$Message.error(res.msg);
               }
             }).catch(err=>{
               // 登录失败提示
