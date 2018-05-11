@@ -209,7 +209,7 @@
             // 设置面包屑路径
             this.$store.commit('SET_BREADCRUMB', [
                 { name: '首页', path: '/Home' },
-                { name: '文章列表', path: '/ArticleManage/ArticleList' }
+                { name: '文章列表', path: '/ArticleManage/List' }
             ]);
             this.getTableList()
         },
