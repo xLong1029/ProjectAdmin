@@ -12,7 +12,7 @@
             <router-view></router-view>
 	        <!-- 项目版权 -->
             <div class="copyright">
-                2018-2022 &copy; SOLO之队版权所有
+                &copy; 2018 筑加网 版权所有 桂ICP备16008233号-1
             </div>
         </div>
     </div>
